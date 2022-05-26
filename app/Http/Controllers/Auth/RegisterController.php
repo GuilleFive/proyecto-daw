@@ -87,6 +87,7 @@ class RegisterController extends Controller
         event(new Registered($user = $this->create($request->all())));
 
         if ($response = $this->registered($request, $user)) {
+            $user->assignRole('client');
             return $response;
         }
 

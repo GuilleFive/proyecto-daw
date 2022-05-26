@@ -1,0 +1,23 @@
+#app{
+    min-height: 100vh;
+}
+
+.app__container{
+    padding-top: 10em;
+}
+.navbar__container{
+    position: fixed;
+    z-index: 2;
+    width: 100%;
+}
+.navbar__icon-img{
+    width: 2em;
+    margin-inline: 0.5em;
+}
+.home__container{
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+}
