@@ -20,16 +20,17 @@ class UserSeeder extends Seeder
     public function run()
     {
         $this->generateProductCategories();
-        $this->generateUsers();
+        $this->generateClients();
         $this->generateOrders();
+        $this->generateAdmins();
     }
 
-    private function generateUsers()
+    private function generateClients()
     {
-        User::factory()->count(10)->create()->each(function ($user) {
+        User::factory()->count(20)->create()->each(function ($user) {
 
             $this->generateAddress($user);
-
+            $user->assignRole('admin');
         });
     }
 
@@ -56,12 +57,13 @@ class UserSeeder extends Seeder
         ]);
     }
 
-    private function generateOrders(){
+    private function generateOrders()
+    {
         Order::factory()->count(50)->create([
             'address_id' => 1,
             'user_id' => 1,
             'product_id' => 1,
-        ])->each(function($order){
+        ])->each(function ($order) {
             $user = $this->findRandomUser();
 
             $order->user_id = $user;
@@ -71,14 +73,28 @@ class UserSeeder extends Seeder
         });
     }
 
-    private function findRandomUser(){
-       return User::all()->random(1)->first()->id;
+    private function findRandomUser()
+    {
+        return User::all()->random(1)->first()->id;
     }
-    private function findRandomProduct(){
+
+    private function findRandomProduct()
+    {
         return Product::all()->random(1)->first()->id;
     }
-    private function findAddress($user){
+
+    private function findAddress($user)
+    {
         return Address::query()->where('user_id', '=', $user)->first()->id;
+    }
+
+    private function generateAdmins()
+    {
+        User::factory()->count(2)->create()->each(
+            function ($user) {
+                $user->assignRole('admin');
+            }
+        );
     }
 
 }
