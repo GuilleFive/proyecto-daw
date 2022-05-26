@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes(['verify' => true]);
+    Auth::routes(['verify' => true]);
 
-Route::get('/', function () {
-    return redirect()->route('home');
-});
+    Route::get('/', function () {
+        return redirect()->route('home');
+    });
 
-Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('verified')->name('home');
+    Route::get('home', function () {
+        return view('home');
+    })->name('home');
