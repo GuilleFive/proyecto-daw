@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
         $this->generateClients();
         $this->generateOrders();
         $this->generateAdmins();
+        $this->generateTryUsers();
     }
 
     private function generateClients()
@@ -30,7 +31,7 @@ class UserSeeder extends Seeder
         User::factory()->count(20)->create()->each(function ($user) {
 
             $this->generateAddress($user);
-            $user->assignRole('admin');
+            $user->assignRole('client');
         });
     }
 
@@ -95,6 +96,24 @@ class UserSeeder extends Seeder
                 $user->assignRole('admin');
             }
         );
+    }
+
+    private function generateTryUsers()
+    {
+        User::factory()->create([
+            'username' => 'client',
+            'password' => 1,
+        ])->assignRole('client');
+
+        User::factory()->create([
+            'username' => 'admin',
+            'password' => 1,
+        ])->assignRole('admin');
+
+        User::factory()->create([
+            'username' => 'super_admin',
+            'password' => 1,
+        ])->assignRole('super_admin');
     }
 
 }

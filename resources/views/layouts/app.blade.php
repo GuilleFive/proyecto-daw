@@ -25,12 +25,13 @@
 </head>
 <body>
 <div id="app">
-    @include('layouts.navbar')
+    @include('layouts.navbar.navbar')
 
     <div class="app__container">
         @yield('content')
     </div>
 </div>
 @include('layouts.footer')
+@stack('scripts')
 </body>
 </html>
