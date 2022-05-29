@@ -51,7 +51,7 @@
                     @enderror
                 </div>
                 <button type="submit" class="btn btn-primary">{{__('Añadir')}}</button>
-                <a href="{{url()->previous()}}" class="btn btn-secondary">{{__('Volver')}}</a>
+                <a href="{{url()->previous() !== route('products.create')?url()->previous():route('home')}}" class="btn btn-secondary">{{__('Volver')}}</a>
             </form>
         </div>
     </div>
