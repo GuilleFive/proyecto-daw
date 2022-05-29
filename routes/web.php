@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +25,19 @@ use Illuminate\Support\Facades\Route;
     Route::get('home', function () {
         return view('home');
     })->name('home');
+
+
+Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], function () {
+
+    Route::get('users', function () {
+        return view('admin.users.list');
+    })->name('users');
+    Route::get('users/list', [UserController::class, 'getClients'])->name('users.list');
+
+    Route::get('products', function () {
+        return view('admin.products.list');
+    })->name('products');
+    Route::get('products/list', [ProductController::class, 'getProducts'])->name('products.list');
+    Route::get('products/create', [ProductController::class, 'formCreateProduct'])->name('products.create');
+    Route::post('products/post', function(){return 'hola';})->name('products.post');
+});

@@ -15,4 +15,8 @@ class Product extends Model
         'stock',
         'price',
     ];
+
+    public function category(){
+        return $this->hasOne(ProductCategory::class);
+    }
 }
