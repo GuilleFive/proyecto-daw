@@ -28,4 +28,40 @@
     align-items: center;
 }
 
+.page-link {
+    position: relative;
+    display: block;
+    color: #d83131;
+    text-decoration: none;
+    background-color: #212529;
+    border: 1px solid #dee2e6;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
 
+.page-link:hover, .page-link:focus {
+    background-color: #353a3f;
+    color: #d83131;
+
+}
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #d83131;
+    border-color: #d83131;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #33393f;
+    border-color: #dee2e6;
+}
+
+select[aria-controls=DataTables_Table_0],select[aria-controls=DataTables_Table_0]:focus{
+    background-color: #212529!important;
+    color: #dee2e6;
+}
+input[aria-controls=DataTables_Table_0],input[aria-controls=DataTables_Table_0]:focus{
+    background-color: #212529!important;
+    color: #dee2e6;
+}
