@@ -18,7 +18,7 @@ class UserController extends Controller
             if (Auth::user()->hasRole('super_admin'))
                 $data = User::role(['client', 'admin'])->with(['roles', 'address'])->get();
             else
-                $data = User::role('client')->with(['roles', 'addresses'])->get();
+                $data = User::role('client')->with('address')->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
