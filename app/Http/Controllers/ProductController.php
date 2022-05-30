@@ -18,7 +18,7 @@ class ProductController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    return view('admin.products.buttons');
+                    return view('admin.products.buttons', ['product' => $row]);
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -30,20 +30,42 @@ class ProductController extends Controller
 
         $categories = ProductCategory::latest()->orderBy('name')->get();
 
-        return view('admin.products.form')->withCategories($categories);
+        return view('admin.products.form')->withCategories($categories)->withForm('Añadir');
+    }
+
+    public function formEditProduct(Product $product)
+    {
+        $categories = ProductCategory::latest()->orderBy('name')->get();
+        return view('admin.products.form')->withCategories($categories)->withForm('Editar')->withProduct($product);
     }
 
     public function createProduct(StoreProductRequest $request)
     {
 
-        $newProduct = Product::create([
+        Product::create([
             'name' => $request->name,
             'description' =>$request->description,
             'stock' => $request->stock,
-            'price' => $request->price,
             'product_category_id' => $request->category,
+            'price' => $request->price,
         ]);
 
         return redirect()->route('products')->withTitle('Producto añadido');
+    }
+
+    public function editProduct(StoreProductRequest $request){
+
+        $product = Product::query()->find($request->id);
+
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->stock = $request->stock;
+        $product->product_category_id = $request->category;
+        $product->price = $request->price;
+
+        $product->save();
+
+        return redirect()->route('products')->withTitle('Producto editado');
+
     }
 }

@@ -9,6 +9,7 @@ use App\Models\ProductCategory;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -19,6 +20,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        $this->generateAddresses();
         $this->generateProductCategories();
         $this->generateClients();
         $this->generateOrders();
@@ -26,12 +28,19 @@ class UserSeeder extends Seeder
         $this->generateTryUsers();
     }
 
+    private function generateAddresses()
+    {
+        Address::factory()->count(30)->create();
+    }
+
     private function generateClients()
     {
-        User::factory()->count(20)->create()->each(function ($user) {
-
-            $this->generateAddress($user);
+        User::factory()->count(20)->create([
+            'address_id' => 1,
+        ])->each(function ($user) {
             $user->assignRole('client');
+            $user->address_id = $this->findRandomAddress()->id;
+            $user->save();
         });
     }
 
@@ -51,13 +60,6 @@ class UserSeeder extends Seeder
         ]);
     }
 
-    private function generateAddress($user)
-    {
-        Address::factory()->count(1)->create([
-            'user_id' => $user
-        ]);
-    }
-
     private function generateOrders()
     {
         Order::factory()->count(50)->create([
@@ -66,27 +68,26 @@ class UserSeeder extends Seeder
             'product_id' => 1,
         ])->each(function ($order) {
             $user = $this->findRandomUser();
-
-            $order->user_id = $user;
+            $order->user_id = $user->id;
             $order->product_id = $this->findRandomProduct();
-            $order->address_id = $this->findAddress($user);
+            $order->address_id = $user->address_id;
             $order->save();
         });
     }
 
+    private function findRandomAddress()
+    {
+        return Address::all()->random(5)->first();
+    }
+
     private function findRandomUser()
     {
-        return User::all()->random(1)->first()->id;
+        return User::all()->random(1)->first();
     }
 
     private function findRandomProduct()
     {
         return Product::all()->random(1)->first()->id;
-    }
-
-    private function findAddress($user)
-    {
-        return Address::query()->where('user_id', '=', $user)->first()->id;
     }
 
     private function generateAdmins()
@@ -100,20 +101,26 @@ class UserSeeder extends Seeder
 
     private function generateTryUsers()
     {
-        User::factory()->create([
+        $user = User::factory()->create([
+            'name' => 'client',
             'username' => 'client',
-            'password' => 1,
+            'password' => Hash::make(1),
         ])->assignRole('client');
 
+        $user->address_id = $this->findRandomAddress()->id;
+        $user->save();
+
         User::factory()->create([
+            'name' => 'admin',
             'username' => 'admin',
-            'password' => 1,
+            'password' => Hash::make(1),
         ])->assignRole('admin');
 
         User::factory()->create([
+            'name' => 'super_admin',
             'username' => 'super_admin',
-            'password' => 1,
+            'password' => Hash::make(1),
         ])->assignRole('super_admin');
-    }
 
+    }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container-fluid px-5 pb-5 mt-5">
-        <h2 class="mb-4">{{__('Lista de clientes')}}</h2>
+        <h2 class="mb-4">{{__('Lista de usuarios')}}</h2>
         <table class="table table-bordered table-striped table-dark yajra-datatable">
             <thead>
             <tr>
@@ -10,6 +10,7 @@
                 <th>{{__('Email')}}</th>
                 <th>{{__('Teléfono')}}</th>
                 <th>{{__('Dirección')}}</th>
+                <th>{{__('Rol')}}</th>
                 <th>{{__('Acción')}}</th>
             </tr>
             </thead>
@@ -36,6 +37,7 @@
                         {data: 'email', name: 'email'},
                         {data: 'phone', name: 'phone'},
                         {data: 'address', name: 'address'},
+                        {data: 'role', name: 'role'},
                         {
                             data: 'action',
                             name: 'action',

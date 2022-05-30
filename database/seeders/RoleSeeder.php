@@ -27,12 +27,14 @@ class RoleSeeder extends Seeder
         $editProfilePermission = Permission::create(['name' => 'edit_profile']);
         $makeOrdersPermission = Permission::create(['name' => 'make_orders']);
 
+        $createProductsPermission = Permission::create(['name' => 'create_products']);
         $createUsersPermission = Permission::create(['name' => 'create_users']);
 
-        $createAdminsPermission = Permission::create((['name' => 'createa_admins']));
+        $createAdminsPermission = Permission::create((['name' => 'create_admins']));
 
         $superAdminRole->givePermissionTo([$createAdminsPermission]);
         $createUsersPermission->assignRole([$superAdminRole, $adminRole]);
+        $createProductsPermission->assignRole([$superAdminRole, $adminRole]);
         $editProfilePermission->assignRole([$superAdminRole, $adminRole, $clientRole]);
         $clientRole->givePermissionTo([$makeOrdersPermission]);
     }
