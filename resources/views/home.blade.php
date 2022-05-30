@@ -2,6 +2,6 @@
 
 @section('content')
 <div class="container home__container">
-<img src="{{asset('Retkon Logo.png')}}">
+<img class="home__image" src="{{asset('Retkon Logo.png')}}">
 </div>
 @endsection

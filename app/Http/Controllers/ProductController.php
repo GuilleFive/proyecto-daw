@@ -17,8 +17,12 @@ class ProductController extends Controller
             $data = Product::query()->join('product_categories', 'product_category_id', 'product_categories.id')->select('products.*', 'product_categories.name as category')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    return view('admin.products.buttons', ['product' => $row]);
+                ->addColumn('action', function ($product) {
+                    return view('admin.products.buttons', ['product' => $product]);
+                })
+                ->addColumn('price', function ($product) {
+
+                    return $product->price.'€';
                 })
                 ->rawColumns(['action'])
                 ->make(true);

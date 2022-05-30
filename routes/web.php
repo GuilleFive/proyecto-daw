@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -40,4 +41,10 @@ Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], func
     Route::get('products/edit/{product}', [ProductController::class, 'formEditProduct'])->name('products.edit');
     Route::post('products/post', [ProductController::class, 'createProduct'])->name('products.post');
     Route::post('products/change', [ProductController::class, 'editProduct'])->name('products.change');
+
+    Route::get('orders', function () {
+        return view('admin.orders.list');
+    })->name('orders');
+    Route::get('orders/list', [OrderController::class, 'getOrders'])->name('orders.list');
+
 });

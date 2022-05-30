@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use function Sodium\add;
 
 class UserSeeder extends Seeder
 {
@@ -20,27 +21,22 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $this->generateAddresses();
-        $this->generateProductCategories();
         $this->generateClients();
-        $this->generateOrders();
         $this->generateAdmins();
         $this->generateTryUsers();
+        $this->generateProductCategories();
+        $this->generateOrders();
     }
 
-    private function generateAddresses()
-    {
-        Address::factory()->count(30)->create();
-    }
-
-    private function generateClients()
+  private function generateClients()
     {
         User::factory()->count(20)->create([
-            'address_id' => 1,
         ])->each(function ($user) {
             $user->assignRole('client');
-            $user->address_id = $this->findRandomAddress()->id;
             $user->save();
+            Address::factory()->create([
+                'user_id' => $user->id,
+            ]);
         });
     }
 
@@ -67,22 +63,17 @@ class UserSeeder extends Seeder
             'user_id' => 1,
             'product_id' => 1,
         ])->each(function ($order) {
-            $user = $this->findRandomUser();
-            $order->user_id = $user->id;
+            $address = $this->findRandomAddress();
+            $order->user_id = $address->user_id;
             $order->product_id = $this->findRandomProduct();
-            $order->address_id = $user->address_id;
+            $order->address_id = $address->id;
             $order->save();
         });
     }
 
     private function findRandomAddress()
     {
-        return Address::all()->random(5)->first();
-    }
-
-    private function findRandomUser()
-    {
-        return User::all()->random(1)->first();
+        return Address::all()->random(1)->first();
     }
 
     private function findRandomProduct()
@@ -107,8 +98,9 @@ class UserSeeder extends Seeder
             'password' => Hash::make(1),
         ])->assignRole('client');
 
-        $user->address_id = $this->findRandomAddress()->id;
-        $user->save();
+        Address::factory()->create([
+            'user_id' => $user->id,
+        ]);
 
         User::factory()->create([
             'name' => 'admin',

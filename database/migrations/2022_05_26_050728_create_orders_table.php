@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('address_id')->constrained('addresses')->onUpdate('cascade')->onDelete('cascade');
+            $table->date('order_date');
             $table->date('delivery_date')->nullable();
             $table->timestamps();
         });

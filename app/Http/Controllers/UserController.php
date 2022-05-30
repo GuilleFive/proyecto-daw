@@ -16,17 +16,24 @@ class UserController extends Controller
     {
         if ($request->ajax()) {
             if (Auth::user()->hasRole('super_admin'))
-                $data = User::role(['client', 'admin'])->addSelect(['address' => Address::query()->select('name')->whereColumn('address_id', 'addresses.id')->limit(1)])->with('roles')->get();
+                $data = User::role(['client', 'admin'])->with(['roles', 'address'])->get();
             else
-                $data = User::role('client')->addSelect(['address' => Address::query()->select('name')->whereColumn('address_id', 'addresses.id')->limit(1)])->get();
+                $data = User::role('client')->with(['roles', 'addresses'])->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function ($row) {
+                ->addColumn('action', function () {
                     return view('admin.users.buttons');
                 })
                 ->addColumn('role', function ($user) {
                     return ucfirst($user->roles->first()->name);
+                })
+                ->addColumn('address', function ($user) {
+                    if(isset($user->address)){
+                        return ($user->address->name);
+                    }
+                    else
+                        return '-';
                 })
                 ->rawColumns(['action'])
                 ->make(true);

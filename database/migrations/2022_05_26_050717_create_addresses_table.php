@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('postal_code');
             $table->string('facturation_name');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
