@@ -18,5 +18,11 @@
     </ul>
 </div>
 
+@push('scripts')
+    <script>
+
+    </script>
+@endpush
+
 
 

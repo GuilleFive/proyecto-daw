@@ -12,13 +12,11 @@
                     class="fa fa-pen"></i></a>
         </li>
         <li>
-            <form action="{{ route('products.delete', $product) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-            </form>
+            <a id="{{$product->id}}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
         </li>
     </ul>
 </div>
+
+
 
 

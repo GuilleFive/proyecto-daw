@@ -25,6 +25,7 @@ class ProductController extends Controller
                     return $product->price.'€';
                 })
                 ->rawColumns(['action'])
+                ->blacklist(['action'])
                 ->make(true);
         }
     }
@@ -74,10 +75,6 @@ class ProductController extends Controller
     }
 
     public function deleteProduct(Product $product){
-
         $product->delete();
-
-        return redirect()->route('products')->withTitle('Producto borrado');
-
     }
 }

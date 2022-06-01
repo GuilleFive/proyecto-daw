@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Address;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use PhpParser\Builder;
 use Yajra\DataTables\DataTables;
 use function PHPUnit\Framework\returnArgument;
 
@@ -36,6 +34,7 @@ class UserController extends Controller
                         return '-';
                 })
                 ->rawColumns(['action'])
+                ->blacklist(['action'])
                 ->make(true);
         }
     }
