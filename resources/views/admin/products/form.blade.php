@@ -79,10 +79,11 @@
                 @isset($product)
                 <input type="hidden" name="id" value="{{$product->id}}">
                 @endisset
+                <div class="mb-5">
+
                 <button type="submit" class="btn btn-primary button-primary-dark">{{isset($product)?__('Editar'):__('Añadir')}}</button>
                 <a href="{{url()->previous() !== route('products.create')?url()->previous():route('home')}}"
                 class="btn btn-secondary">{{__('Volver')}}</a>
-                <div class="mb-5">
                 </div>
             </form>
         </div>
