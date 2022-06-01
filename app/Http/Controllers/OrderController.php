@@ -29,6 +29,7 @@ class OrderController extends Controller
                     return $order->address->name;
                 })
                 ->rawColumns(['action'])
+                ->blacklist(['action'])
                 ->make(true);
         }
     }

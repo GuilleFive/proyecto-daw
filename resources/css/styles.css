@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
+
 * {
     font-family: Roboto, serif;
 }
@@ -155,5 +156,4 @@ input[aria-controls=DataTables_Table_0], input[aria-controls=DataTables_Table_0]
 .dark-background{
     background-color: #4b4b4b;
 }
-
 
