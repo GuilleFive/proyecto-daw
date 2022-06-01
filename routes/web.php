@@ -32,6 +32,7 @@ Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], func
 
     Route::get('users', [UserController::class, 'getDatatable'])->name('users');
     Route::get('users/list', [UserController::class, 'getUsers'])->name('users.list');
+    Route::delete('users/delete/{user}', [UserController::class, 'deleteUser'])->name('users.delete');
 
     Route::get('products', function () {
         return view('admin.products.list');
@@ -41,6 +42,7 @@ Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], func
     Route::get('products/edit/{product}', [ProductController::class, 'formEditProduct'])->name('products.edit');
     Route::post('products/post', [ProductController::class, 'createProduct'])->name('products.post');
     Route::post('products/change', [ProductController::class, 'editProduct'])->name('products.change');
+    Route::delete('products/delete/{product}', [ProductController::class, 'deleteProduct'])->name('products.delete');
 
     Route::get('orders', function () {
         return view('admin.orders.list');

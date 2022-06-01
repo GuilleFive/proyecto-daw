@@ -136,7 +136,23 @@ input[aria-controls=DataTables_Table_0], input[aria-controls=DataTables_Table_0]
     background-color: #24292d;
     border: #d83131 1px solid;
     padding: 0.8em;
-    margin-bottom: 2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    text-align: center;
+    width: 30%;
 }
 
+.dropdown-menu.show {
+    display: inline-flex;
+    justify-content: space-evenly;
+}
+.blue-color{
+    color: #2891de;
+}
+
+.dark-background{
+    background-color: #4b4b4b;
+}
 

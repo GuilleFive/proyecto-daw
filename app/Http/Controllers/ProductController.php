@@ -72,4 +72,12 @@ class ProductController extends Controller
         return redirect()->route('products')->withTitle('Producto editado');
 
     }
+
+    public function deleteProduct(Product $product){
+
+        $product->delete();
+
+        return redirect()->route('products')->withTitle('Producto borrado');
+
+    }
 }

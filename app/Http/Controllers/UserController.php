@@ -22,8 +22,8 @@ class UserController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function () {
-                    return view('admin.users.buttons');
+                ->addColumn('action', function ($user) {
+                    return view('admin.users.buttons', ['user' => $user]);
                 })
                 ->addColumn('role', function ($user) {
                     return ucfirst($user->roles->first()->name);
@@ -48,5 +48,13 @@ class UserController extends Controller
         else{
             return view('admin.users.list');
         }
+    }
+
+    public function deleteUser(User $user){
+
+        $user->delete();
+
+        return redirect()->route('users')->withTitle('Usuario borrado');
+
     }
 }
