@@ -25,7 +25,8 @@
         <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
         <script type="text/javascript">
 
-                var table = $('.yajra-datatable').DataTable({
+                const table = $('.yajra-datatable').DataTable({
+                    scrollX: true,
                     processing: true,
                     serverSide: true,
                     ajax: "{{ route('users.list') }}",

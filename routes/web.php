@@ -19,6 +19,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('cache-clear', function() {
+    \Artisan::call('cache:clear');
+    \Artisan::call('config:cache');
+    \Artisan::call('view:cache');
+    return redirect()->route('home');
+});
+
+Route::get('migrate', function() {
+    \Artisan::call('migrate:fresh --seed');
+    return redirect()->route('home');
+});
+
 Auth::routes(['verify' => true]);
 
 Route::get('/', function () {

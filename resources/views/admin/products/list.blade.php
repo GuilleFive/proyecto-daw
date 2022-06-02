@@ -28,6 +28,7 @@
         <script type="text/javascript">
 
             const table = $('.yajra-datatable').DataTable({
+                scrollX: true,
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('products.list') }}",

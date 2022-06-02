@@ -25,17 +25,17 @@
         <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
         <script type="text/javascript">
-            $(function () {
 
-                var table = $('.yajra-datatable').DataTable({
+                const table = $('.yajra-datatable').DataTable({
+                    scrollX: true,
                     processing: true,
                     serverSide: true,
                     ajax: "{{ route('orders.list') }}",
                     columns: [
                         {data: 'id', name: 'id'},
-                        {data: 'user', name: 'user'},
-                        {data: 'product', name: 'product'},
-                        {data: 'address', name: 'address'},
+                        {data: 'user', name: 'user_id'},
+                        {data: 'product', name: 'product_id'},
+                        {data: 'address', name: 'address_id'},
                         {data: 'order_date', name: 'order_date'},
                         {data: 'delivery_date', name: 'delivery_date'},
                         {
@@ -47,7 +47,6 @@
                     ]
                 });
 
-            });
         </script>
     @endpush
 @endsection
