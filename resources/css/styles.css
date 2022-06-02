@@ -145,7 +145,7 @@ input[aria-controls=DataTables_Table_0], input[aria-controls=DataTables_Table_0]
     width: 30%;
 }
 
-.dropdown-menu.show {
+table .dropdown-menu.show {
     display: inline-flex;
     justify-content: space-evenly;
 }
@@ -156,4 +156,3 @@ input[aria-controls=DataTables_Table_0], input[aria-controls=DataTables_Table_0]
 .dark-background{
     background-color: #4b4b4b;
 }
-

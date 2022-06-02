@@ -9,20 +9,10 @@
                     class="fa fa-eye"></i></a>
         </li>
         <li>
-            <form action="{{ route('users.delete', $user) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-            </form>
+            <a id="{{$user->id}}" class="btn btn-danger btn-sm users-delete-btn"><i class="fa fa-trash"></i></a>
         </li>
     </ul>
 </div>
-
-@push('scripts')
-    <script>
-
-    </script>
-@endpush
 
 
 

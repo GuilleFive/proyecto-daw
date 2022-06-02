@@ -14,15 +14,19 @@ class ProductController extends Controller
     public function getProducts(Request $request)
     {
         if ($request->ajax()) {
-            $data = Product::query()->join('product_categories', 'product_category_id', 'product_categories.id')->select('products.*', 'product_categories.name as category')->get();
+            $data = Product::latest()->with('product_category');
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function ($product) {
-                    return view('admin.products.buttons', ['product' => $product]);
+                ->addColumn('category', function ($product) {
+
+                    return $product->product_category->name;
                 })
                 ->addColumn('price', function ($product) {
 
                     return $product->price.'€';
+                })
+                ->addColumn('action', function ($product) {
+                    return view('admin.products.buttons', ['product' => $product]);
                 })
                 ->rawColumns(['action'])
                 ->blacklist(['action'])
@@ -51,7 +55,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'description' =>$request->description,
             'stock' => $request->stock,
-            'product_category_id' => $request->category,
+            'product_categores_id' => $request->category,
             'price' => $request->price,
         ]);
 
@@ -65,7 +69,7 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->stock = $request->stock;
-        $product->product_category_id = $request->category;
+        $product->product_categories = $request->category;
         $product->price = $request->price;
 
         $product->save();

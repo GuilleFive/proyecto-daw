@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -17,11 +18,11 @@ class Product extends Model
         'price',
     ];
 
-    public function category(){
-        return $this->hasOne(ProductCategory::class);
+    public function product_category(){
+        return $this->belongsTo(ProductCategory::class);
     }
 
     public function order(){
-        return $this->hasOne(Order::class);
+        return $this->hasMany(Order::class);
     }
 }

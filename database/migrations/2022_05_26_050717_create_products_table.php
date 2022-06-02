@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('stock');
             $table->foreignId('product_category_id')->constrained('product_categories')->onUpdate('cascade')->onDelete('cascade');
             $table->float('price', 10);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

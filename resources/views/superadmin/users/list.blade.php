@@ -25,12 +25,11 @@
         <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
         <script type="text/javascript">
-            $(function () {
-
                 var table = $('.yajra-datatable').DataTable({
                     processing: true,
                     serverSide: true,
                     ajax: "{{ route('users.list') }}",
+                    fnDrawCallback: assignEventListener,
                     columns: [
                         {data: 'name', name: 'name'},
                         {data: 'username', name: 'username'},
@@ -47,7 +46,55 @@
                     ]
                 });
 
-            });
+                function assignEventListener() {
+                    document.querySelectorAll('.users-delete-btn').forEach(element => {
+                        element.addEventListener('click', () => openDeleteAlert(element.id));
+                    });
+                }
+
+                function openDeleteAlert(id) {
+                    Swal.fire({
+                        title: '¿Desea eliminar este usuario?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonText: 'Eliminar',
+                        color: '#dee2e6',
+                        iconColor: '#ff852d',
+                        background: '#24292d',
+                    }).then((result) => {
+
+                        if (result.isConfirmed) {
+
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{csrf_token()}}',
+                                }
+                            });
+
+                            $.ajax({
+                                url: 'users/delete/' + id,
+                                type: 'DELETE',
+                            }).then(
+                                $('.yajra-datatable').DataTable(
+
+                                ).draw().then(
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Usuario eliminado',
+                                        showConfirmButton: false,
+                                        timer: 1100,
+                                        color: '#dee2e6',
+                                        iconColor: '#85ff3e',
+                                        background: '#24292d',
+                                    })
+                                )
+                            )
+                        }
+                    })
+                }
         </script>
     @endpush
 @endsection

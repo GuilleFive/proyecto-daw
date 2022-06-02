@@ -12,7 +12,7 @@
                     class="fa fa-pen"></i></a>
         </li>
         <li>
-            <a id="{{$product->id}}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+            <a id="{{$product->id}}" class="btn btn-danger btn-sm products-delete-btn"><i class="fa fa-trash"></i></a>
         </li>
     </ul>
 </div>

@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('content')
     <div class="container-fluid px-5 pb-5">
+        <a href="{{route('products.create')}}" class="btn btn-outline-primary button-primary-outline-dark float-end"><i
+                class="fa fa-plus-circle"> </i>{{__(' Añadir producto')}}</a>
         <h2 class="mb-4">{{__('Lista de productos')}}</h2>
         <table class="table table-bordered table-striped table-dark yajra-datatable">
             <thead>
@@ -16,8 +18,6 @@
             <tbody>
             </tbody>
         </table>
-        <a href="{{route('products.create')}}" class="btn btn-outline-primary button-primary-outline-dark float-end"><i
-                class="fa fa-plus-circle"> </i>{{__(' Añadir producto')}}</a>
     </div>
 
     @push('scripts')
@@ -48,7 +48,7 @@
             })
 
             function assignEventListener() {
-                document.querySelectorAll('.btn-danger').forEach(element => {
+                document.querySelectorAll('.products-delete-btn').forEach(element => {
                     element.addEventListener('click', () => openDeleteAlert(element.id));
                 });
             }
@@ -61,7 +61,10 @@
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     cancelButtonText: 'Cancelar',
-                    confirmButtonText: 'Eliminar'
+                    confirmButtonText: 'Eliminar',
+                    color: '#dee2e6',
+                    iconColor: '#ff852d',
+                    background: '#24292d',
                 }).then((result) => {
 
                     if (result.isConfirmed) {
@@ -83,7 +86,10 @@
                                         icon: 'success',
                                         title: 'Producto eliminado',
                                         showConfirmButton: false,
-                                        timer: 1100
+                                        timer: 1100,
+                                        color: '#dee2e6',
+                                        iconColor: '#85ff3e',
+                                        background: '#24292d',
                                     })
 
                             )
