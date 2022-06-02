@@ -156,3 +156,17 @@ table .dropdown-menu.show {
     background-color: #4b4b4b;
 }
 
+.square{
+    width: 200px;
+    height: 200px;
+    background: #0a53be;
+    margin-bottom: 2em;
+}
+
+.container-img-desc{
+    text-align: left;
+}
+.container-img-desc p{
+    max-width: 200px;
+}
+

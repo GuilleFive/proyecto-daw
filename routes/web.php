@@ -4,6 +4,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -18,16 +19,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-    Auth::routes(['verify' => true]);
+Auth::routes(['verify' => true]);
 
-    Route::get('/', function () {
-        return redirect()->route('home');
-    });
+Route::get('/', function () {
+    return redirect()->route('home');
+});
 
-    Route::get('home', function () {
-        return view('home');
-    })->name('home');
+Route::get('home', function () {
+    return view('home');
+})->name('home');
 
+Route::get('product/view/{product}', [ProductController::class, 'showProduct'])->name('products.view');
 
 Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], function () {
 

@@ -23,7 +23,7 @@ class ProductController extends Controller
                 })
                 ->addColumn('price', function ($product) {
 
-                    return $product->price.'€';
+                    return $product->price . '€';
                 })
                 ->addColumn('action', function ($product) {
                     return view('admin.products.buttons', ['product' => $product]);
@@ -53,7 +53,7 @@ class ProductController extends Controller
 
         Product::create([
             'name' => $request->name,
-            'description' =>$request->description,
+            'description' => $request->description,
             'stock' => $request->stock,
             'product_categores_id' => $request->category,
             'price' => $request->price,
@@ -62,7 +62,8 @@ class ProductController extends Controller
         return redirect()->route('products')->withTitle('Producto añadido');
     }
 
-    public function editProduct(StoreProductRequest $request){
+    public function editProduct(StoreProductRequest $request)
+    {
 
         $product = Product::query()->find($request->id);
 
@@ -78,7 +79,13 @@ class ProductController extends Controller
 
     }
 
-    public function deleteProduct(Product $product){
+    public function deleteProduct(Product $product)
+    {
         $product->delete();
+    }
+
+    public function showProduct(Product $product)
+    {
+        return view('all.product_view', ['product' => $product]);
     }
 }

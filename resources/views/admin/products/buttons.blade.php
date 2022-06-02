@@ -5,7 +5,7 @@
     </button>
     <ul class="dropdown-menu dark-background" aria-labelledby="dropdownMenuButton1">
         <li>
-            <a href="javascript:void(0)" class="btn btn-primary button-primary-dark btn-sm"><i
+            <a href="{{route('products.view', $product)}}" class="btn btn-primary button-primary-dark btn-sm"><i
                     class="fa fa-eye"></i></a>
         </li>
         <li><a href="{{route('products.edit', $product)}}" class="btn btn-secondary btn-sm"><i

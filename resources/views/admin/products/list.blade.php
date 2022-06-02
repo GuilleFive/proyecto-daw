@@ -27,7 +27,7 @@
         <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
         <script type="text/javascript">
 
-            var table = $('.yajra-datatable').DataTable({
+            const table = $('.yajra-datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('products.list') }}",
@@ -79,9 +79,7 @@
                             url: 'products/delete/' + id,
                             type: 'DELETE',
                         }).then(
-                            $('.yajra-datatable').DataTable(
-
-                            ).draw().then(
+                            $('.yajra-datatable').DataTable().draw().then(
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'Producto eliminado',
