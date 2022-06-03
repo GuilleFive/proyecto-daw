@@ -152,7 +152,7 @@ input[aria-controls=DataTables_Table_0], input[aria-controls=DataTables_Table_0]
     margin: auto;
 }
 
-.dataTables_scrollBody{
+.dataTables_scrollBody {
     min-height: 10em;
 }
 
@@ -210,6 +210,11 @@ table .dropdown-menu.show {
     scrollbar-width: none !important;
 }
 
+.echart {
+    width: 500px;
+    height: 500px;
+}
+
 @media screen and (max-width: 992px) {
     li.paginate_button.previous {
         display: inline;
@@ -230,7 +235,8 @@ table .dropdown-menu.show {
     #DataTables_Table_0_wrapper .row:nth-child(odd) div {
         width: 100%;
     }
-    #DataTables_Table_0_paginate{
+
+    #DataTables_Table_0_paginate {
         margin-top: 2em;
     }
 }

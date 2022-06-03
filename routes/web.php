@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
@@ -38,9 +39,7 @@ Route::get('/', function () {
     return redirect()->route('home');
 });
 
-Route::get('home', function () {
-    return view('home');
-})->name('home');
+Route::get('home', [HomeController::class, 'index'])->name('home');
 
 Route::get('product/view/{product}', [ProductController::class, 'showProduct'])->name('products.view');
 
