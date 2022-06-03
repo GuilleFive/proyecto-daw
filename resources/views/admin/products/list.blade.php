@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container-fluid px-5 pb-5">
+    <div class="container pb-5">
         <a href="{{route('products.create')}}" class="btn btn-outline-primary button-primary-outline-dark float-end"><i
                 class="fa fa-plus-circle"> </i>{{__(' Añadir producto')}}</a>
         <h2 class="mb-4">{{__('Lista de productos')}}</h2>
@@ -37,7 +37,7 @@
                     {data: 'name', name: 'name'},
                     {data: 'description', name: 'description'},
                     {data: 'stock', name: 'stock'},
-                    {data: 'category', name: 'category'},
+                    {data: 'category', name: 'product_category_id'},
                     {data: 'price', name: 'price'},
                     {
                         data: 'action',
@@ -48,18 +48,38 @@
                 ]
             })
 
+            function openViewModal(product) {
+                const oProduct = JSON.parse(product);
+                Swal.fire({
+                    title: oProduct.name,
+                    icon: 'info',
+                    text: '',
+                    confirmButtonColor: '#2891de',
+                    confirmButtonText: 'Cerrar',
+                    color: '#dee2e6',
+                    iconColor: '#2891de',
+                    background: '#24292d',
+                })
+            }
+
             function assignEventListener() {
                 document.querySelectorAll('.products-delete-btn').forEach(element => {
-                    element.addEventListener('click', () => openDeleteAlert(element.id));
+                    element.addEventListener('click', () => openDeleteModal(element.id));
+                });
+
+                document.querySelectorAll('.products-view-btn').forEach(element => {
+                    element.addEventListener('click', () => openViewModal(element.dataset.product));
                 });
             }
 
-            function openDeleteAlert(id) {
+            function openDeleteModal(product) {
+                const oProduct = JSON.parse(product);
                 Swal.fire({
                     title: '¿Desea eliminar este producto?',
+                    html: `ID: ${oProduct.id}<br><br>Nombre: ${oProduct.name}`,
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
+                    confirmButtonColor: '#2891de',
                     cancelButtonColor: '#d33',
                     cancelButtonText: 'Cancelar',
                     confirmButtonText: 'Eliminar',
@@ -77,21 +97,24 @@
                         });
 
                         $.ajax({
-                            url: 'products/delete/' + id,
+                            url: '{{route('products.delete')}}',
                             type: 'DELETE',
-                        }).then(
-                            $('.yajra-datatable').DataTable().draw().then(
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Producto eliminado',
-                                        showConfirmButton: false,
-                                        timer: 1100,
-                                        color: '#dee2e6',
-                                        iconColor: '#85ff3e',
-                                        background: '#24292d',
-                                    })
-
-                            )
+                            data: {
+                                'product': product
+                            },
+                        }).success(
+                            () => {
+                                $('.yajra-datatable').DataTable().draw()
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Producto eliminado',
+                                    showConfirmButton: false,
+                                    timer: 1100,
+                                    color: '#dee2e6',
+                                    iconColor: '#85ff3e',
+                                    background: '#24292d',
+                                })
+                            }
                         )
                     }
                 })

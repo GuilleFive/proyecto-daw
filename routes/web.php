@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -57,7 +58,7 @@ Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], func
     Route::get('products/edit/{product}', [ProductController::class, 'formEditProduct'])->name('products.edit');
     Route::post('products/post', [ProductController::class, 'createProduct'])->name('products.post');
     Route::post('products/change', [ProductController::class, 'editProduct'])->name('products.change');
-    Route::delete('products/delete/{product}', [ProductController::class, 'deleteProduct'])->name('products.delete');
+    Route::delete('products/delete', [ProductController::class, 'deleteProduct'])->name('products.delete');
 
     Route::get('orders', function () {
         return view('admin.orders.list');
@@ -65,3 +66,4 @@ Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], func
     Route::get('orders/list', [OrderController::class, 'getOrders'])->name('orders.list');
 
 });
+

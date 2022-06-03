@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
         $this->generateOrders();
     }
 
-  private function generateClients()
+    private function generateClients()
     {
         User::factory()->count(20)->create([
         ])->each(function ($user) {
@@ -42,6 +42,10 @@ class UserSeeder extends Seeder
 
     private function generateProductCategories()
     {
+        ProductCategory::factory()->create([
+            'name' => '[Sin categoría]',
+        ]);
+
         ProductCategory::factory()->count(10)->create()->each(function ($productCategory) {
 
             $this->generateProducts($productCategory);

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container-fluid px-5 pb-5">
+    <div class="container pb-5">
         <h2 class="mb-4">{{__('Lista de pedidos')}}</h2>
         <table class="table table-bordered table-striped table-dark yajra-datatable">
             <thead>

@@ -152,6 +152,10 @@ input[aria-controls=DataTables_Table_0], input[aria-controls=DataTables_Table_0]
     margin: auto;
 }
 
+.dataTables_scrollBody{
+    min-height: 10em;
+}
+
 #DataTables_Table_0_wrapper .row:nth-child(odd) {
     margin-top: 1em;
     justify-content: space-around;

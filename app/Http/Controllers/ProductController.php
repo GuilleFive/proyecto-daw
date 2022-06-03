@@ -37,14 +37,14 @@ class ProductController extends Controller
     public function formCreateProduct()
     {
 
-        $categories = ProductCategory::latest()->orderBy('name')->get();
+        $categories = ProductCategory::latest()->orderBy('id')->get();
 
         return view('admin.products.form')->withCategories($categories)->withForm('Añadir');
     }
 
     public function formEditProduct(Product $product)
     {
-        $categories = ProductCategory::latest()->orderBy('name')->get();
+        $categories = ProductCategory::latest()->orderBy('id')->get();
         return view('admin.products.form')->withCategories($categories)->withForm('Editar')->withProduct($product);
     }
 
@@ -70,7 +70,7 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->stock = $request->stock;
-        $product->product_categories = $request->category;
+        $product->product_category_id = $request->category;
         $product->price = $request->price;
 
         $product->save();
@@ -79,8 +79,9 @@ class ProductController extends Controller
 
     }
 
-    public function deleteProduct(Product $product)
+    public function deleteProduct(Request $request)
     {
+        $product = Product::query()->find(json_decode($request->product)->id);
         $product->delete();
     }
 

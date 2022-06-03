@@ -52,7 +52,7 @@
                     <select name="category" class="form-select" id="category">
                         @foreach($categories as $category)
                             <option value="{{$category->id}}"
-                                    @if($category->id == old('category') || (isset($product) && $category->id == "$product->category_id"))
+                                    @if($category->id === old('category') || (isset($product) && $category->id === $product->product_category_id))
                                     selected="selected"
                                     @endif
                                     name="{{$category->id}}">{{$category->name}}</option>
