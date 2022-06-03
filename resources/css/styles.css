@@ -211,11 +211,6 @@ table .dropdown-menu.show {
     scrollbar-width: none !important;
 }
 
-.echart {
-    width: 500px;
-    height: 500px;
-}
-
 @media screen and (max-width: 992px) {
     li.paginate_button.previous {
         display: inline;
