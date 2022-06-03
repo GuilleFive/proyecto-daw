@@ -7,7 +7,7 @@
             <tr>
                 <th>{{__('ID')}}</th>
                 <th>{{__('Usuario')}}</th>
-                <th>{{__('Producto')}}</th>
+                <th>{{__('Nº de Productos')}}</th>
                 <th>{{__('Dirección')}}</th>
                 <th>{{__('Fecha pedido')}}</th>
                 <th>{{__('Fecha entrega')}}</th>

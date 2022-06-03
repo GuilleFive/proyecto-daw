@@ -49,11 +49,10 @@ class UserController extends Controller
         }
     }
 
-    public function deleteUser(User $user){
+    public function deleteUser(Request $request){
 
+        $user = User::query()->find(json_decode($request->user)->id);
         $user->delete();
-
-        return redirect()->route('users')->withTitle('Usuario borrado');
 
     }
 }

@@ -65,12 +65,13 @@ class UserSeeder extends Seeder
         Order::factory()->count(50)->create([
             'address_id' => 1,
             'user_id' => 1,
-            'product_id' => 1,
         ])->each(function ($order) {
             $address = $this->findRandomAddress();
             $order->user_id = $address->user_id;
-            $order->product_id = $this->findRandomProduct();
             $order->address_id = $address->id;
+            for ($i = 0; $i < rand(1, 6); $i++)
+            $order->product()->attach($this->findRandomProduct());
+
             $order->save();
         });
     }

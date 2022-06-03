@@ -25,77 +25,92 @@
         <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
         <script type="text/javascript">
-                const table = $('.yajra-datatable').DataTable({
-                    scrollX: true,
-                    processing: true,
-                    serverSide: true,
-                    ajax: "{{ route('users.list') }}",
-                    fnDrawCallback: assignEventListener,
-                    columns: [
-                        {data: 'name', name: 'name'},
-                        {data: 'username', name: 'username'},
-                        {data: 'email', name: 'email'},
-                        {data: 'phone', name: 'phone'},
-                        {data: 'address', name: 'address'},
-                        {data: 'role', name: 'role'},
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: true,
-                            searchable: true
-                        },
-                    ]
+            const table = $('.yajra-datatable').DataTable({
+                scrollX: true,
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('users.list') }}",
+                fnDrawCallback: assignEventListener,
+                columns: [
+                    {data: 'name', name: 'name'},
+                    {data: 'username', name: 'username'},
+                    {data: 'email', name: 'email'},
+                    {data: 'phone', name: 'phone'},
+                    {data: 'address', name: 'address'},
+                    {data: 'role', name: 'role'},
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: true,
+                        searchable: true
+                    },
+                ]
+            });
+
+            function assignEventListener() {
+                document.querySelectorAll('.users-delete-btn').forEach(element => {
+                    element.addEventListener('click', () => openDeleteModal(element.dataset.user));
                 });
+            }
 
-                function assignEventListener() {
-                    document.querySelectorAll('.users-delete-btn').forEach(element => {
-                        element.addEventListener('click', () => openDeleteAlert(element.id));
-                    });
-                }
+            function openDeleteModal(user) {
+                const oUser = JSON.parse(user);
+                Swal.fire({
+                    title: '¿Desea eliminar este usuario?',
+                    html: `ID: ${oUser.id}<br><br>Nombre: ${oUser.name}`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: 'Eliminar',
+                    color: '#dee2e6',
+                    iconColor: '#ff852d',
+                    background: '#24292d',
+                }).then((result) => {
 
-                function openDeleteAlert(id) {
-                    Swal.fire({
-                        title: '¿Desea eliminar este usuario?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonText: 'Eliminar',
-                        color: '#dee2e6',
-                        iconColor: '#ff852d',
-                        background: '#24292d',
-                    }).then((result) => {
+                    if (result.isConfirmed) {
 
-                        if (result.isConfirmed) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': '{{csrf_token()}}',
+                            }
+                        });
 
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': '{{csrf_token()}}',
-                                }
-                            });
+                        $.ajax({
+                            url: '{{route('users.delete')}}',
+                            type: 'DELETE',
+                            data: {
+                                "user": user,
+                            }
+                        }).done(
+                            () => {
+                                $('.yajra-datatable').DataTable().draw();
 
-                            $.ajax({
-                                url: 'users/delete/' + id,
-                                type: 'DELETE',
-                            }).then(
-                                $('.yajra-datatable').DataTable(
-
-                                ).draw().then(
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Usuario eliminado',
-                                        showConfirmButton: false,
-                                        timer: 1100,
-                                        color: '#dee2e6',
-                                        iconColor: '#85ff3e',
-                                        background: '#24292d',
-                                    })
-                                )
-                            )
-                        }
-                    })
-                }
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Usuario eliminado',
+                                    showConfirmButton: false,
+                                    timer: 1100,
+                                    color: '#dee2e6',
+                                    iconColor: '#85ff3e',
+                                    background: '#24292d',
+                                });
+                            }).fail(
+                            () => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error de conexión',
+                                    text: 'Inténtelo de nuevo',
+                                    showConfirmButton: true,
+                                    color: '#dee2e6',
+                                    iconColor: '#d83131',
+                                    background: '#24292d',
+                                });
+                            })
+                    }
+                })
+            }
         </script>
     @endpush
 @endsection

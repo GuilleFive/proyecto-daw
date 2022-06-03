@@ -48,7 +48,7 @@ Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], func
 
     Route::get('users', [UserController::class, 'getDatatable'])->name('users');
     Route::get('users/list', [UserController::class, 'getUsers'])->name('users.list');
-    Route::delete('users/delete/{user}', [UserController::class, 'deleteUser'])->name('users.delete');
+    Route::delete('users/delete', [UserController::class, 'deleteUser'])->name('users.delete');
 
     Route::get('products', function () {
         return view('admin.products.list');

@@ -13,7 +13,7 @@ class OrderController extends Controller
     public function getOrders(Request $request)
     {
         if ($request->ajax()) {
-                $data = Order::latest()->with(['user', 'product', 'address']);
+            $data = Order::latest()->with(['user', 'product', 'address']);
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function () {
@@ -23,7 +23,9 @@ class OrderController extends Controller
                     return $order->user->name;
                 })
                 ->addColumn('product', function ($order) {
-                    return $order->product->name;
+
+
+                    return count($order->product);
                 })
                 ->addColumn('address', function ($order) {
                     return $order->address->name;

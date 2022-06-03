@@ -9,7 +9,7 @@
                     class="fa fa-eye"></i></a>
         </li>
         <li>
-            <a id="{{$user->id}}" class="btn btn-danger btn-sm users-delete-btn"><i class="fa fa-trash"></i></a>
+            <a data-user="{{json_encode($user)}}" class="btn btn-danger btn-sm users-delete-btn"><i class="fa fa-trash"></i></a>
         </li>
     </ul>
 </div>

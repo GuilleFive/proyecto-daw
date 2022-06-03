@@ -23,6 +23,6 @@ class Product extends Model
     }
 
     public function order(){
-        return $this->hasMany(Order::class);
+        return $this->belongsToMany(Order::class);
     }
 }

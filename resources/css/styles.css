@@ -231,4 +231,7 @@ table .dropdown-menu.show {
     #DataTables_Table_0_wrapper .row:nth-child(odd) div {
         width: 100%;
     }
+    #DataTables_Table_0_paginate{
+        margin-top: 2em;
+    }
 }

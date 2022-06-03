@@ -64,11 +64,7 @@
 
             function assignEventListener() {
                 document.querySelectorAll('.products-delete-btn').forEach(element => {
-                    element.addEventListener('click', () => openDeleteModal(element.id));
-                });
-
-                document.querySelectorAll('.products-view-btn').forEach(element => {
-                    element.addEventListener('click', () => openViewModal(element.dataset.product));
+                    element.addEventListener('click', () => openDeleteModal(element.dataset.product));
                 });
             }
 
@@ -113,9 +109,19 @@
                                     color: '#dee2e6',
                                     iconColor: '#85ff3e',
                                     background: '#24292d',
+                                });
+                            }).fail(
+                            () => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error de conexión',
+                                    text: 'Inténtelo de nuevo',
+                                    showConfirmButton: true,
+                                    color: '#dee2e6',
+                                    iconColor: '#d83131',
+                                    background: '#24292d',
                                 })
-                            }
-                        )
+                            })
                     }
                 })
             }
