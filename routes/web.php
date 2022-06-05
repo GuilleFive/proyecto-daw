@@ -45,6 +45,8 @@ Route::get('product/view/{product}', [ProductController::class, 'showProduct'])-
 
 Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], function () {
 
+    Route::get('home/echart', [HomeController::class, 'getEchartData'])->name('home.echart');
+
     Route::get('users', [UserController::class, 'getDatatable'])->name('users');
     Route::get('users/list', [UserController::class, 'getUsers'])->name('users.list');
     Route::delete('users/delete', [UserController::class, 'deleteUser'])->name('users.delete');

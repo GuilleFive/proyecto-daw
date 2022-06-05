@@ -198,7 +198,7 @@ table .dropdown-menu.show {
 }
 
 .dataTables_scrollBody {
-    overflow-x: scroll !important; /* Add the ability to scroll */
+    overflow-x: scroll !important;
 }
 
 .dataTables_scrollBody::-webkit-scrollbar {
@@ -211,8 +211,8 @@ table .dropdown-menu.show {
 }
 
 .echart {
-    width: 500px;
-    height: 500px;
+    width: 600px;
+    height: 600px;
 }
 
 @media screen and (max-width: 992px) {

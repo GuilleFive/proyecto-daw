@@ -42,11 +42,12 @@ class UserSeeder extends Seeder
 
     private function generateProductCategories()
     {
-        ProductCategory::factory()->create([
+        $noCategory = ProductCategory::factory()->create([
             'name' => '[Sin categoría]',
         ]);
+        $this->generateProducts($noCategory);
 
-        ProductCategory::factory()->count(10)->create()->each(function ($productCategory) {
+        ProductCategory::factory()->count(8)->create()->each(function ($productCategory) {
 
             $this->generateProducts($productCategory);
 
