@@ -56,14 +56,14 @@ class UserSeeder extends Seeder
 
     private function generateProducts($productCategory)
     {
-        Product::factory()->count(rand(3, 20))->create([
+        Product::factory()->count(rand(1, 10))->create([
             'product_category_id' => $productCategory,
         ]);
     }
 
     private function generateOrders()
     {
-        Order::factory()->count(50)->create([
+        Order::factory()->count(1000)->create([
             'address_id' => 1,
             'user_id' => 1,
         ])->each(function ($order) {

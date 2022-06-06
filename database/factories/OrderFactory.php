@@ -16,7 +16,7 @@ class OrderFactory extends Factory
      */
     public function definition()
     {
-        $randomDate = mt_rand(strtotime('2010-01-01'), time());
+        $randomDate = mt_rand(strtotime('2021-01-01'), time());
         $delivery = date('Y.m.d', $randomDate);
         $order = date('Y-m-d', strtotime('-'.mt_rand(1, 6).' days', $randomDate));
         return [

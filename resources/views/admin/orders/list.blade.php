@@ -9,6 +9,7 @@
                 <th>{{__('Usuario')}}</th>
                 <th>{{__('Nº de Productos')}}</th>
                 <th>{{__('Dirección')}}</th>
+                <th>{{__('Coste Total')}}</th>
                 <th>{{__('Fecha pedido')}}</th>
                 <th>{{__('Fecha entrega')}}</th>
                 <th>{{__('Acción')}}</th>
@@ -32,13 +33,14 @@
                         {data: 'user', name: 'user_id'},
                         {data: 'product', name: 'product_id'},
                         {data: 'address', name: 'address_id'},
+                        {data: 'cost', name: 'cost'},
                         {data: 'order_date', name: 'order_date'},
                         {data: 'delivery_date', name: 'delivery_date'},
                         {
                             data: 'action',
                             name: 'action',
-                            orderable: true,
-                            searchable: true
+                            orderable: false,
+                            searchable: false
                         },
                     ]
                 });

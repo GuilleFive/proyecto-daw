@@ -45,7 +45,9 @@ Route::get('product/view/{product}', [ProductController::class, 'showProduct'])-
 
 Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], function () {
 
-    Route::get('home/echart', [HomeController::class, 'getEchartData'])->name('home.echart');
+    Route::get('home/salesByCategory', [HomeController::class, 'getSalesByCategoryData'])->name('home.salesByCategory');
+    Route::get('home/salesByDay', [HomeController::class, 'getSalesByDayData'])->name('home.salesByDay');
+    Route::get('home/topSales', [HomeController::class, 'getTopSales'])->name('home.topSales');
 
     Route::get('users', [UserController::class, 'getDatatable'])->name('users');
     Route::get('users/list', [UserController::class, 'getUsers'])->name('users.list');

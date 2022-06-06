@@ -5,7 +5,7 @@
 
 body {
     background-color: #31373d;
-    color: #eaeaea;
+    color: #dee2e6;
 }
 
 #app {
@@ -210,9 +210,9 @@ table .dropdown-menu.show {
     scrollbar-width: none !important;
 }
 
-.echart {
-    width: 600px;
-    height: 600px;
+.categories-pie, .days-bar {
+    min-width: 15em;
+    min-height: 50vh;
 }
 
 @media screen and (max-width: 992px) {

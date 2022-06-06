@@ -30,8 +30,17 @@ class OrderController extends Controller
                 ->addColumn('address', function ($order) {
                     return $order->address->name;
                 })
+                ->addColumn('cost', function ($order) {
+                    $totalCost = 0;
+
+                    foreach ($order->product as $product){
+                        $totalCost += $product->price;
+                    }
+
+                    return $totalCost.'€';
+                })
                 ->rawColumns(['action'])
-                ->blacklist(['action'])
+                ->blacklist(['action', 'price'])
                 ->make(true);
         }
     }
