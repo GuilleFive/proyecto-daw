@@ -70,8 +70,14 @@ class UserSeeder extends Seeder
             $address = $this->findRandomAddress();
             $order->user_id = $address->user_id;
             $order->address_id = $address->id;
-            for ($i = 0; $i < rand(1, 6); $i++)
-            $order->product()->attach($this->findRandomProduct());
+            $product = $this->findRandomProduct();
+            for ($i = 0; $i < rand(1, 6); $i++) {
+                if(rand(1,10)>9){
+                    for($i = 0; $i < rand(1, 3); $i++)
+                    $order->product()->attach($product);
+                }
+                $order->product()->attach($this->findRandomProduct());
+            }
 
             $order->save();
         });

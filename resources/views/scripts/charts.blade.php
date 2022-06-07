@@ -1,6 +1,9 @@
 <script>
     const salesByCategory = Echarts.init(document.querySelector('.categories-pie'));
-    salesByCategory.showLoading();
+    const salesByDay = Echarts.init(document.querySelector('.days-bar'));
+
+    salesByCategory.showLoading({backgroundColor: 'blue'});
+    salesByDay.showLoading({backgroundColor: 'blue'});
 
     $.ajax({
         url: '{{route('home.salesByCategory')}}',
@@ -62,10 +65,6 @@
         }
     });
 
-    const salesByDay = Echarts.init(document.querySelector('.days-bar'));
-    salesByDay.showLoading();
-
-
     $.ajax({
         url: '{{route('home.salesByDay')}}',
         type: 'get',
@@ -103,8 +102,11 @@
                     }
                 ]
             };
-            salesByDay.hideLoading();
-            salesByDay.setOption(option);
+            setTimeout(()=>{
+                salesByDay.hideLoading();
+                salesByDay.setOption(option);
+            }, 4000);
+
         }
     )
     ;

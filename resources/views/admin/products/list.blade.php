@@ -7,6 +7,7 @@
         <table class="table table-bordered table-striped table-dark yajra-datatable">
             <thead>
             <tr>
+                <th>{{__('ID')}}</th>
                 <th>{{__('Nombre')}}</th>
                 <th>{{__('Descripción')}}</th>
                 <th>{{__('Stock')}}</th>
@@ -23,13 +24,48 @@
     @push('scripts')
         <script type="text/javascript">
 
-            const table = $('.yajra-datatable').DataTable({
+            const table = $('.yajra-datatable');
+            let columns = [];
+            for (let i = 0; i < table[0].rows[0].cells.length - 1; i++)
+                columns[i] = i;
+
+            const dataTable = table.DataTable({
+                dom: 'Bfrltip',
+                buttons: [{
+                    extend: 'pdfHtml5',
+                    title: document.querySelector('.container>h2.mb-4').textContent,
+                    text: '<i class="fa fa-file-pdf"></i>',
+                    titleAttr: 'Exportar a pdf',
+                    className: 'btn',
+                    enabled: false,
+                    exportOptions: {
+                        columns: columns,
+                        customize: function (doc) {
+                            doc.content[1].margin = [100, 0, 100, 0]
+                        },
+                    }
+                }, {
+                    extend: 'excelHtml5',
+                    title: document.querySelector('.container>h2.mb-4').textContent,
+                    text: '<i class="fas fa-file-excel"></i>',
+                    titleAttr: 'Exportar a excel',
+                    className: 'btn',
+                    enabled: false,
+                    exportOptions: {
+                        columns: columns,
+                    }
+                }],
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, 'Todos'],
+                ],
                 scrollX: true,
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('products.list') }}",
-                fnDrawCallback: assignEventListener,
+                fnDrawCallback: finishDrawing,
                 columns: [
+                    {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
                     {data: 'description', name: 'description'},
                     {data: 'stock', name: 'stock'},
@@ -42,7 +78,15 @@
                         searchable: false
                     },
                 ]
-            })
+            });
+
+            function finishDrawing() {
+                document.querySelectorAll('.products-delete-btn').forEach(element => {
+                    element.addEventListener('click', () => openDeleteModal(element.dataset.product));
+                });
+                dataTable.button(0).enable(true);
+                dataTable.button(1).enable(true);
+            }
 
             function openViewModal(product) {
                 const oProduct = JSON.parse(product);
@@ -58,11 +102,7 @@
                 })
             }
 
-            function assignEventListener() {
-                document.querySelectorAll('.products-delete-btn').forEach(element => {
-                    element.addEventListener('click', () => openDeleteModal(element.dataset.product));
-                });
-            }
+
 
             function openDeleteModal(product) {
                 const oProduct = JSON.parse(product);

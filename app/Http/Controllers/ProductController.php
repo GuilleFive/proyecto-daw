@@ -14,7 +14,7 @@ class ProductController extends Controller
     public function getProducts(Request $request)
     {
         if ($request->ajax()) {
-            $data = Product::latest()->with('product_category');
+            $data = Product::query()->with('product_category')->orderBy('id')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('category', function ($product) {
@@ -37,7 +37,7 @@ class ProductController extends Controller
     public function formCreateProduct()
     {
 
-        $categories = ProductCategory::latest()->orderBy('id')->get();
+        $categories = ProductCategory::query()->orderBy('id')->get();
 
         return view('admin.products.form')->withCategories($categories)->withForm('Añadir');
     }

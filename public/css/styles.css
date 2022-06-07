@@ -145,7 +145,60 @@ input[aria-controls=DataTables_Table_0], input[aria-controls=DataTables_Table_0]
     left: 50%;
     transform: translate(-50%, -10%);
     text-align: center;
-    width: 30%;
+    width: 35%;
+    z-index: 1100;
+}
+
+#DataTables_Table_0_length {
+    margin-left: 5em;
+
+}
+
+#DataTables_Table_0_paginate, #DataTables_Table_0_info {
+    margin-top: 1em;
+    margin-left: 5em;
+}
+
+.buttons-pdf {
+    border: 1px solid #d83131;
+    color: #d83131;
+    margin-left: 5em;
+    margin-bottom: 2em;
+
+}
+
+.buttons-pdf:hover {
+    color: #dee2e6;
+    background-color: #d83131;
+    border-color: #d83131;
+}
+
+.buttons-pdf:focus {
+    color: #dee2e6;
+    background-color: #f54c4c;
+    border-color: #f54c4c;
+    box-shadow: 0 0 0 0.25rem rgba(178, 39, 39, 0.59);
+}
+
+.buttons-excel {
+    border: 1px solid #31ab2a;
+    color: #31ab2a;
+    margin-left: 1em;
+    margin-bottom: 2em;
+
+}
+
+.buttons-excel:hover {
+    color: #dee2e6;
+    background-color: #31ab2a;
+    border-color: #31ab2a;
+}
+
+.buttons-excel:focus {
+    color: #dee2e6;
+    background-color: #59f151;
+    border-color: #59f151;
+    box-shadow: 0 0 0 0.25rem rgba(49, 159, 32, 0.59);
 }
 
 .dataTables_scrollHeadInner, .yajra-datatable {
@@ -167,6 +220,9 @@ input[aria-controls=DataTables_Table_0], input[aria-controls=DataTables_Table_0]
 
 #DataTables_Table_0_filter {
     float: right;
+    margin-bottom: 1em;
+    margin-right: 5em;
+    min-width: 10em;
 }
 
 table .dropdown-menu.show {
@@ -180,21 +236,6 @@ table .dropdown-menu.show {
 
 .dark-background {
     background-color: #4b4b4b;
-}
-
-.square {
-    width: 200px;
-    height: 200px;
-    background: #0a53be;
-    margin-bottom: 2em;
-}
-
-.container-img-desc {
-    text-align: left;
-}
-
-.container-img-desc p {
-    max-width: 200px;
 }
 
 .dataTables_scrollBody {
@@ -211,11 +252,11 @@ table .dropdown-menu.show {
 }
 
 .categories-pie, .days-bar {
-    min-width: 15em;
+    min-width: 20em;
     min-height: 50vh;
 }
 
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 768px) {
     li.paginate_button.previous {
         display: inline;
     }
@@ -236,8 +277,16 @@ table .dropdown-menu.show {
         width: 100%;
     }
 
-    #DataTables_Table_0_paginate {
-        margin-top: 2em;
+    #DataTables_Table_0_filter {
+        margin-right: 0;
     }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .buttons-pdf {
+        transition: none;
+    }
+
 }
 

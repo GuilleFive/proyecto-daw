@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('cache-clear', function() {
+Route::get('clear', function() {
     \Artisan::call('cache:clear');
     \Artisan::call('config:cache');
     \Artisan::call('view:cache');

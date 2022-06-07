@@ -14,9 +14,9 @@ class UserController extends Controller
     {
         if ($request->ajax()) {
             if (Auth::user()->hasRole('super_admin'))
-                $data = User::role(['client', 'admin'])->with(['roles', 'address'])->get();
+                $data = User::role(['client', 'admin'])->with(['roles', 'address'])->orderBy('id')->get();
             else
-                $data = User::role('client')->with('address')->get();
+                $data = User::role('client')->with('address')->orderBy('id')->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
