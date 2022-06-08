@@ -21,14 +21,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('clear', function() {
+Route::get('clear', function () {
     \Artisan::call('cache:clear');
     \Artisan::call('config:cache');
     \Artisan::call('view:cache');
     return redirect()->route('home');
 });
 
-Route::get('migrate', function() {
+Route::get('migrate', function () {
     \Artisan::call('migrate:fresh --seed');
     return redirect()->route('home');
 });
@@ -63,10 +63,22 @@ Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], func
     Route::post('products/change', [ProductController::class, 'editProduct'])->name('products.change');
     Route::delete('products/delete', [ProductController::class, 'deleteProduct'])->name('products.delete');
 
+    Route::post('product_categories/post', [ProductCategoryController::class, 'createCategory'])->name('product_categories.post');
+
+
     Route::get('orders', function () {
         return view('admin.orders.list');
     })->name('orders');
-    Route::get('orders/list', [OrderController::class, 'getOrders'])->name('orders.list');
+    Route::post('orders/list', [OrderController::class, 'getOrders'])->name('orders.list');
 
 });
+
+Route::group(['middleware' => ['can:create_admins', 'verified', 'auth']], function () {
+
+    Route::patch('users/upgrade', [UserController::class, 'changePowerUser'])->name('users.upgrade');
+    Route::patch('users/restore', [UserController::class, 'restoreUser'])->name('users.restore');
+    Route::delete('users/force_delete', [UserController::class, 'forceDeleteUser'])->name('users.force_delete');
+
+});
+
 

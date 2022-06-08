@@ -13,10 +13,20 @@ class UserController extends Controller
     public function getUsers(Request $request)
     {
         if ($request->ajax()) {
-            if (Auth::user()->hasRole('super_admin'))
-                $data = User::role(['client', 'admin'])->with(['roles', 'address'])->orderBy('id')->get();
-            else
-                $data = User::role('client')->with('address')->orderBy('id')->get();
+            if ($request->deleted === "true") {
+                $data = User::onlyTrashed();
+            } else
+                $data = User::query();
+
+            if ($request->admins === "true") {
+                $data = $data->role(['admin'])->with(['roles', 'address']);
+            } elseif (Auth::user()->hasRole('super_admin')) {
+                $data = $data->role(['admin', 'client'])->with(['roles', 'address']);
+            } else
+                $data = $data->role(['admin', 'client'])->with(['address']);
+
+            $data = $data->orderBy('id')->get();
+
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -27,10 +37,9 @@ class UserController extends Controller
                     return ucfirst($user->roles->first()->name);
                 })
                 ->addColumn('address', function ($user) {
-                    if(isset($user->address)){
+                    if (isset($user->address)) {
                         return ($user->address->name);
-                    }
-                    else
+                    } else
                         return '-';
                 })
                 ->rawColumns(['action'])
@@ -41,18 +50,42 @@ class UserController extends Controller
 
     public function getDatatable()
     {
-        if(Auth::user()->hasRole('super_admin')){
+        if (Auth::user()->hasRole('super_admin')) {
             return view('superadmin.users.list');
-        }
-        else{
+        } else {
             return view('admin.users.list');
         }
     }
 
-    public function deleteUser(Request $request){
+    public function deleteUser(Request $request)
+    {
 
         $user = User::query()->find(json_decode($request->user)->id);
         $user->delete();
 
+    }
+
+    public function forceDeleteUser(Request $request)
+    {
+
+        $user = User::withTrashed()->find(json_decode($request->user)->id);
+        $user->forceDelete();
+
+    }
+
+    public function changePowerUser(Request $request)
+    {
+        $user = User::query()->find(json_decode($request->user)->id);
+        if ($request->change === 'promote')
+            $user->roles()->sync(2);
+        else
+            $user->roles()->sync(3);
+
+    }
+
+    public function restoreUser(Request $request)
+    {
+        $user = User::withTrashed()->find(json_decode($request->user)->id);
+        $user->restore();
     }
 }

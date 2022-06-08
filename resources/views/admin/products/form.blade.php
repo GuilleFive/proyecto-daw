@@ -47,9 +47,10 @@
                     </span>
                     @enderror
                 </div>
-                <div class="mb-3">
-                    <label for="" class="form-label">{{__('Categoría')}}</label>
-                    <select name="category" class="form-select" id="category">
+                <label for="category" class="form-label">{{__('Categoría')}}</label>
+
+                <div class="mb-3 d-flex flex-wrap justify-content-between">
+                    <select name="category" class="form-select w-75" id="category">
                         @foreach($categories as $category)
                             <option value="{{$category->id}}"
                                     @if($category->id === old('category') || (isset($product) && $category->id === $product->product_category_id))
@@ -57,7 +58,8 @@
                                     @endif
                                     name="{{$category->id}}">{{$category->name}}</option>
                         @endforeach
-                    </select>
+                    </select> <button id="add-category" type="button" class="btn btn-outline-primary button-primary-outline-dark float-end"><i
+                            class="fa fa-plus-circle"></i></button>
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">{{__('Precio (€)')}}</label>
@@ -88,4 +90,75 @@
             </form>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            document.querySelector('#add-category').addEventListener('click', openModalNewCategory);
+            function openModalNewCategory(){
+                Swal.fire({
+                    title: 'Nueva categoría',
+                    html: `<div class="mb-2">
+                            <label for="category-name" class="form-label">{{__('Nombre')}}</label>
+                            <input type="text" name="category-name" class="form-control" id="category-name">
+                            </div>
+
+                            <div class="mb-2">
+                            <label for="category-description" class="form-label">{{__('Descripción')}}</label>
+                            <textarea name="category-description" class="form-control" id="category-description"></textarea>
+                            </div>`,
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#2891de',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: 'Añadir',
+                    color: '#dee2e6',
+                    iconColor: '#2891de',
+                    background: '#24292d',
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': '{{csrf_token()}}',
+                            }
+                        });
+
+                        $.ajax({
+                            url: '{{route('product_categories.post')}}',
+                            type: 'POST',
+                            data: {
+                                'name': document.querySelector('#category-name').value,
+                                'description':document.querySelector('#category-description').value,
+                            },
+                        }).success(
+                            data => {
+                                document.querySelector('#category').innerHTML+= data;
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Categoría creada',
+                                    showConfirmButton: false,
+                                    timer: 1100,
+                                    color: '#dee2e6',
+                                    iconColor: '#85ff3e',
+                                    background: '#24292d',
+                                });
+                            }).fail(
+                            () => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Compruebe que el nombre y la descripción están rellenos',
+                                    showConfirmButton: true,
+                                    color: '#dee2e6',
+                                    iconColor: '#d83131',
+                                    background: '#24292d',
+                                })
+                            })
+                    }
+                })
+            }
+        </script>
+    @endpush
 @endsection

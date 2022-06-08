@@ -12,18 +12,27 @@ class OrderController extends Controller
 {
     public function getOrders(Request $request)
     {
+
         if ($request->ajax()) {
-            $data = Order::query()->with(['user', 'product', 'address'])->orderBy('id')->get();
+            $data = Order::query()->with(['user', 'product', 'address'])->orderBy('id');
+
+            if (isset($request->startDate)) {
+                $data = $data->where('order_date', '>=', date($request->startDate));
+            }
+            if (isset($request->endDate)) {
+                $data = $data->where('order_date', '<=', date($request->endDate));
+            }
+            $data = $data->get();
+
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function () {
-                    return view('admin.orders.buttons');
+                ->addColumn('action', function ($order) {
+                    return view('admin.orders.buttons', ['order' => $order]);
                 })
                 ->addColumn('user', function ($order) {
                     return $order->user->name;
                 })
                 ->addColumn('product', function ($order) {
-
 
                     return count($order->product);
                 })
@@ -33,16 +42,15 @@ class OrderController extends Controller
                 ->addColumn('cost', function ($order) {
                     $totalCost = 0;
 
-                    foreach ($order->product as $product){
+                    foreach ($order->product as $product) {
                         $totalCost += $product->price;
                     }
 
-                    return $totalCost.'€';
+                    return $totalCost . '€';
                 })
                 ->rawColumns(['action'])
                 ->blacklist(['action', 'price'])
                 ->make(true);
         }
     }
-
 }

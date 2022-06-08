@@ -102,11 +102,8 @@
                     }
                 ]
             };
-            setTimeout(()=>{
                 salesByDay.hideLoading();
                 salesByDay.setOption(option);
-            }, 4000);
-
         }
     )
     ;
@@ -117,7 +114,8 @@
         }
     });
 
-    const topSales = document.querySelector('.top-sales');
+    const topSalesTitle = document.querySelector('p.h1.top-sales')
+    const topSales = document.querySelector('p.h4.top-sales');
 
     $.ajax(
         {
@@ -126,6 +124,7 @@
         }
     ).done(
         data => {
+            topSalesTitle.innerHTML = 'Producto más vendido este mes:';
             topSales.innerHTML = data;
         }
     )

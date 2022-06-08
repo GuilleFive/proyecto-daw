@@ -1,1 +1,2 @@
-<a href="javascript:void(0)" class="btn btn-primary button-primary-dark btn-sm"><i class="fa fa-eye"></i></a>
+<button data-order="{{json_encode($order)}}" class="btn btn-primary button-primary-dark btn-sm orders-view-btn"><i class="fa fa-eye"></i></button>
+

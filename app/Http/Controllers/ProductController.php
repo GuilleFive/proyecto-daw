@@ -51,7 +51,7 @@ class ProductController extends Controller
     public function createProduct(StoreProductRequest $request)
     {
 
-        Product::create([
+        Product::factory()->create([
             'name' => $request->name,
             'description' => $request->description,
             'stock' => $request->stock,

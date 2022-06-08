@@ -13,7 +13,7 @@
 
         <div class="row">
             <div class="col-12 text-center mt-5">
-                <h2 class="h1">Producto más vendido este mes:</h2>
+                <p class="h1 top-sales"></p>
                 <p class="top-sales h4"></p>
             </div>
         </div>

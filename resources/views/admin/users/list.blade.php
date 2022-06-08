@@ -81,6 +81,7 @@
                 document.querySelectorAll('.users-delete-btn').forEach(element => {
                     element.addEventListener('click', () => openDeleteModal(element.dataset.user));
                 });
+
                 dataTable.button(0).enable(true);
                 dataTable.button(1).enable(true);
             }
@@ -117,7 +118,7 @@
                             }
                         }).success(
                             () => {
-                                $('.yajra-datatable').DataTable().draw();
+                                dataTable.draw();
 
                                 Swal.fire({
                                         icon: 'success',
@@ -145,6 +146,8 @@
                     }
                 })
             }
+
+
         </script>
     @endpush
 @endsection

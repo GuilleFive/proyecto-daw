@@ -136,7 +136,7 @@
                             },
                         }).success(
                             () => {
-                                $('.yajra-datatable').DataTable().draw()
+                                dataTable.draw();
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Producto eliminado',
