@@ -25,7 +25,7 @@ class UserController extends Controller
             } else
                 $data = $data->role(['admin', 'client'])->with(['address']);
 
-            $data = $data->orderBy('id')->get();
+            $data = $data->get();
 
 
             return DataTables::of($data)
@@ -69,6 +69,7 @@ class UserController extends Controller
     {
 
         $user = User::withTrashed()->find(json_decode($request->user)->id);
+
         $user->forceDelete();
 
     }

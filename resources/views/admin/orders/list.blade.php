@@ -98,8 +98,8 @@
                 fnDrawCallback: finishDrawing,
                 columns: [
                     {data: 'id', name: 'id'},
-                    {data: 'user', name: 'user_id'},
-                    {data: 'product', name: 'product_id', orderable: false,},
+                    {data: 'user', name: 'user'},
+                    {data: 'product', name: 'product'},
                     {data: 'address', name: 'address_id'},
                     {data: 'cost', name: 'cost'},
                     {data: 'order_date', name: 'order_date'},
@@ -162,7 +162,6 @@
                 for (const name of Object.keys(products)) {
                     countProducts +=`<p>${name} x ${products[name]}</p>`
                 }
-                console.log(countProducts);
 
                 return countProducts;
             }

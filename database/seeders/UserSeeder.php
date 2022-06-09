@@ -30,6 +30,7 @@ class UserSeeder extends Seeder
 
     private function generateClients()
     {
+
         User::factory()->count(20)->create([
         ])->each(function ($user) {
             $user->assignRole('client');
@@ -63,35 +64,20 @@ class UserSeeder extends Seeder
 
     private function generateOrders()
     {
-        $order = Order::factory()->create([
-            'address_id' => 1,
-            'user_id' => 1,
-        ]);
-
-        $address = $this->findRandomAddress();
-        $order->user_id = $address->user_id;
-        $order->address_id = $address->id;
-        $order->product()->attach(1);
-        $order->product()->attach(1);
-        $order->product()->attach(1);
-        $order->product()->attach(1);
-
         Order::factory()->count(1000)->create([
             'address_id' => 1,
             'user_id' => 1,
         ])->each(function ($order) {
             $address = $this->findRandomAddress();
-            $order->user_id = $address->user_id;
-            $order->address_id = $address->id;
 
-            $address = $this->findRandomAddress();
             $order->user_id = $address->user_id;
             $order->address_id = $address->id;
             $product = $this->findRandomProduct();
+
             for ($i = 0; $i < rand(1, 6); $i++) {
-                if(rand(1,10)>9){
-                    for($i = 0; $i < rand(1, 3); $i++)
-                    $order->product()->attach($product);
+                if (rand(1, 10) > 5) {
+                    for ($i = 0; $i < rand(1, 3); $i++)
+                        $order->product()->attach($product);
                 }
                 $order->product()->attach($this->findRandomProduct());
             }

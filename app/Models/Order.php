@@ -21,7 +21,7 @@ class Order extends Model
 
     public function product()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class)->withTrashed();
     }
 
     public function address()

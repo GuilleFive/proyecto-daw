@@ -10,11 +10,14 @@
             </button>
         </li>
         @if(!$user->trashed())
-        <li>
-            <button data-user="{{json_encode($user)}}" class="btn @if($user->hasRole('client')) btn-success @else btn-warning @endif btn-sm users-change-btn">
-                <i class="fa @if($user->hasRole('client')) fa-angle-double-up @else fa-angle-double-down @endif"></i>
-            </button>
-        </li>
+            @if(\Illuminate\Support\Facades\Auth::user()->hasRole('superadmin'))
+                <li>
+                    <button data-user="{{json_encode($user)}}"
+                            class="btn @if($user->hasRole('client')) btn-success @else btn-warning @endif btn-sm users-change-btn">
+                        <i class="fa @if($user->hasRole('client')) fa-angle-double-up @else fa-angle-double-down @endif"></i>
+                    </button>
+                </li>
+            @endif
         @else
             <li>
                 <button data-user="{{json_encode($user)}}" class="btn btn-sm btn-danger users-force-delete-btn">
@@ -23,7 +26,8 @@
             </li>
         @endif
         <li>
-            <button data-user="{{json_encode($user)}}" class="btn btn-sm @if(!$user->trashed())btn-danger users-delete-btn @else btn-success users-restore-btn @endif">
+            <button data-user="{{json_encode($user)}}"
+                    class="btn btn-sm @if(!$user->trashed())btn-danger users-delete-btn @else btn-success users-restore-btn @endif">
                 <i class="fa @if(!$user->trashed()) fa-trash @else fa-trash-restore @endif"></i>
             </button>
         </li>
