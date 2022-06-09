@@ -63,7 +63,6 @@ Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], func
     Route::post('products/change', [ProductController::class, 'editProduct'])->name('products.change');
     Route::delete('products/delete', [ProductController::class, 'deleteProduct'])->name('products.delete');
 
-    Route::post('product_categories/post', [ProductCategoryController::class, 'createCategory'])->name('product_categories.post');
 
 
     Route::get('orders', function () {
@@ -78,6 +77,10 @@ Route::group(['middleware' => ['can:create_admins', 'verified', 'auth']], functi
     Route::patch('users/upgrade', [UserController::class, 'changePowerUser'])->name('users.upgrade');
     Route::patch('users/restore', [UserController::class, 'restoreUser'])->name('users.restore');
     Route::delete('users/force_delete', [UserController::class, 'forceDeleteUser'])->name('users.force_delete');
+
+    Route::post('product_categories/post', [ProductCategoryController::class, 'createCategory'])->name('product_categories.post');
+    Route::delete('product_categories/delete', [ProductCategoryController::class, 'deleteCategory'])->name('product_categories.delete');
+
 
 });
 

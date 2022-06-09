@@ -4,7 +4,8 @@
     <div class="container ">
         <h2>{{__($form.' producto')}}</h2>
         <div class="d-flex justify-content-center">
-            <form action="{{isset($product)?route('products.change'):route('products.post')}}" method="POST" class="col-md-4">
+            <form action="{{isset($product)?route('products.change'):route('products.post')}}" method="POST"
+                  class="col-md-4">
                 @csrf
                 <div class="mb-3">
                     <label for="name" class="form-label">{{__('Nombre')}}</label>
@@ -13,7 +14,7 @@
                            value="{{old('name')?old('name'):$product->name}}"
                            @else
                            value="{{old('name')}}"
-                        @endisset
+                           @endisset
                            id="name">
 
                     @error('name')
@@ -24,7 +25,8 @@
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">{{__('Descripción')}}</label>
-                    <textarea name="description" class="form-control @error('description')is-invalid @enderror" id="description">@isset($product){{old('description')?trim(old('description')):trim($product->description)}} @else{{trim(old('description'))}}@endisset</textarea>
+                    <textarea name="description" class="form-control @error('description')is-invalid @enderror"
+                              id="description">@isset($product){{old('description')?trim(old('description')):trim($product->description)}} @else{{trim(old('description'))}}@endisset</textarea>
                     @error('description')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -50,7 +52,7 @@
                 <label for="category" class="form-label">{{__('Categoría')}}</label>
 
                 <div class="mb-3 d-flex flex-wrap justify-content-between">
-                    <select name="category" class="form-select w-75" id="category">
+                    <select name="category" class="form-select @can('create_admins') w-75" @endcan id="category">
                         @foreach($categories as $category)
                             <option value="{{$category->id}}"
                                     @if($category->id === old('category') || (isset($product) && $category->id === $product->product_category_id))
@@ -58,8 +60,18 @@
                                     @endif
                                     name="{{$category->id}}">{{$category->name}}</option>
                         @endforeach
-                    </select> <button id="add-category" type="button" class="btn btn-outline-primary button-primary-outline-dark float-end"><i
-                            class="fa fa-plus-circle"></i></button>
+                    </select>
+                    @can('create_admins')
+                        <button id="add-category" type="button"
+                                class="btn btn-outline-primary button-primary-outline-dark float-end">
+                            <i class="fa fa-plus-circle"></i>
+                        </button>
+
+                        <button id="remove-category" type="button"
+                                class="btn btn-outline-danger float-end">
+                            <i class="fa fa-minus-circle"></i>
+                        </button>
+                    @endcan
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">{{__('Precio (€)')}}</label>
@@ -79,25 +91,29 @@
                     @enderror
                 </div>
                 @isset($product)
-                <input type="hidden" name="id" value="{{$product->id}}">
+                    <input type="hidden" name="id" value="{{$product->id}}">
                 @endisset
                 <div class="mb-5">
 
-                <button type="submit" class="btn btn-primary button-primary-dark">{{isset($product)?__('Editar'):__('Añadir')}}</button>
-                <a href="{{url()->previous() !== route('products.create')?url()->previous():route('home')}}"
-                class="btn btn-secondary">{{__('Volver')}}</a>
+                    <button type="submit"
+                            class="btn btn-primary button-primary-dark">{{isset($product)?__('Editar'):__('Añadir')}}</button>
+                    <a href="{{url()->previous() !== route('products.create')?url()->previous():route('home')}}"
+                       class="btn btn-secondary">{{__('Volver')}}</a>
                 </div>
             </form>
         </div>
     </div>
 
     @push('scripts')
-        <script>
-            document.querySelector('#add-category').addEventListener('click', openModalNewCategory);
-            function openModalNewCategory(){
-                Swal.fire({
-                    title: 'Nueva categoría',
-                    html: `<div class="mb-2">
+        @can('create_admins')
+            <script>
+                document.querySelector('#add-category').addEventListener('click', openModalNewCategory);
+                document.querySelector('#remove-category').addEventListener('click', () => openModalRemoveCategory(document.querySelector('#category').value));
+
+                function openModalNewCategory() {
+                    Swal.fire({
+                        title: 'Nueva categoría',
+                        html: `<div class="mb-2">
                             <label for="category-name" class="form-label">{{__('Nombre')}}</label>
                             <input type="text" name="category-name" class="form-control" id="category-name">
                             </div>
@@ -106,59 +122,123 @@
                             <label for="category-description" class="form-label">{{__('Descripción')}}</label>
                             <textarea name="category-description" class="form-control" id="category-description"></textarea>
                             </div>`,
-                    icon: 'info',
-                    showCancelButton: true,
-                    confirmButtonColor: '#2891de',
-                    cancelButtonColor: '#d33',
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonText: 'Añadir',
-                    color: '#dee2e6',
-                    iconColor: '#2891de',
-                    background: '#24292d',
-                }).then((result) => {
+                        icon: 'info',
+                        showCancelButton: true,
+                        confirmButtonColor: '#2891de',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonText: 'Añadir',
+                        color: '#dee2e6',
+                        iconColor: '#2891de',
+                        background: '#24292d',
+                    }).then((result) => {
 
-                    if (result.isConfirmed) {
+                        if (result.isConfirmed) {
 
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': '{{csrf_token()}}',
-                            }
-                        });
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{csrf_token()}}',
+                                }
+                            });
 
-                        $.ajax({
-                            url: '{{route('product_categories.post')}}',
-                            type: 'POST',
-                            data: {
-                                'name': document.querySelector('#category-name').value,
-                                'description':document.querySelector('#category-description').value,
-                            },
-                        }).success(
-                            data => {
-                                document.querySelector('#category').innerHTML+= data;
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Categoría creada',
-                                    showConfirmButton: false,
-                                    timer: 1100,
-                                    color: '#dee2e6',
-                                    iconColor: '#85ff3e',
-                                    background: '#24292d',
-                                });
-                            }).fail(
-                            () => {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: 'Compruebe que el nombre y la descripción están rellenos',
-                                    showConfirmButton: true,
-                                    color: '#dee2e6',
-                                    iconColor: '#d83131',
-                                    background: '#24292d',
+                            $.ajax({
+                                url: '{{route('product_categories.post')}}',
+                                type: 'POST',
+                                data: {
+                                    'name': document.querySelector('#category-name').value,
+                                    'description': document.querySelector('#category-description').value,
+                                },
+                            }).success(
+                                data => {
+                                    document.querySelector('#category').innerHTML += data;
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Categoría creada',
+                                        showConfirmButton: false,
+                                        timer: 1100,
+                                        color: '#dee2e6',
+                                        iconColor: '#85ff3e',
+                                        background: '#24292d',
+                                    });
+                                }).fail(
+                                () => {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: 'Compruebe que el nombre y la descripción están rellenos',
+                                        showConfirmButton: true,
+                                        color: '#dee2e6',
+                                        iconColor: '#d83131',
+                                        background: '#24292d',
+                                    })
                                 })
-                            })
-                    }
-                })
-            }
-        </script>
+                        }
+                    })
+                }
+
+                function openModalRemoveCategory(category) {
+
+                    const categoryOption = document.querySelector('#category').options[document.querySelector('#category').selectedIndex];
+
+                    Swal.fire({
+                        title: '¿Desea eliminar esta categoría?',
+                        html: categoryOption.textContent,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#2891de',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonText: 'Eliminar',
+                        color: '#dee2e6',
+                        iconColor: '#ff852d',
+                        background: '#24292d',
+                    }).then((result) => {
+
+                        if (result.isConfirmed) {
+
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{csrf_token()}}',
+                                }
+                            });
+
+                            $.ajax({
+                                url: '{{route('product_categories.delete')}}',
+                                type: 'DELETE',
+                                data: {
+                                    'category': category
+                                },
+                            }).success(
+                                () => {
+
+                                    categoryOption.remove();
+
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Categoría eliminada',
+                                        showConfirmButton: false,
+                                        timer: 1100,
+                                        color: '#dee2e6',
+                                        iconColor: '#85ff3e',
+                                        background: '#24292d',
+                                    });
+                                }).fail(
+                                () => {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error de conexión',
+                                        text: 'Inténtelo de nuevo',
+                                        showConfirmButton: true,
+                                        color: '#dee2e6',
+                                        iconColor: '#d83131',
+                                        background: '#24292d',
+                                    })
+                                })
+                        }
+                    });
+
+                }
+            </script>
+        @endcan
     @endpush
 @endsection

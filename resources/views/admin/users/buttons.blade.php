@@ -10,14 +10,14 @@
             </button>
         </li>
         @if(!$user->trashed())
-            @if(\Illuminate\Support\Facades\Auth::user()->hasRole('superadmin'))
+            @can('create_admins')
                 <li>
                     <button data-user="{{json_encode($user)}}"
                             class="btn @if($user->hasRole('client')) btn-success @else btn-warning @endif btn-sm users-change-btn">
                         <i class="fa @if($user->hasRole('client')) fa-angle-double-up @else fa-angle-double-down @endif"></i>
                     </button>
                 </li>
-            @endif
+            @endcan
         @else
             <li>
                 <button data-user="{{json_encode($user)}}" class="btn btn-sm btn-danger users-force-delete-btn">
