@@ -28,7 +28,6 @@ class RoleSeeder extends Seeder
         $makeOrdersPermission = Permission::create(['name' => 'make_orders']);
 
         $createProductsPermission = Permission::create(['name' => 'create_products']);
-        $createUsersPermission = Permission::create(['name' => 'create_users']);
 
         $createAdminsPermission = Permission::create((['name' => 'create_admins']));
 

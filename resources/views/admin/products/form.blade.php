@@ -61,7 +61,7 @@
                                     name="{{$category->id}}">{{$category->name}}</option>
                         @endforeach
                     </select>
-                    @can('create_admins')
+                    @can('create_products')
                         <button id="add-category" type="button"
                                 class="btn btn-outline-primary button-primary-outline-dark float-end">
                             <i class="fa fa-plus-circle"></i>

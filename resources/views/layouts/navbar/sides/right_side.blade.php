@@ -14,15 +14,16 @@
         @endif
     @else
         <li class="nav-item dropdown">
-            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false" v-pre>
                 {{ Auth::user()->username }}
             </a>
 
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 @can('make_orders')
-                <a class="dropdown-item" href="{{ '#' }}">
-                    {{__('Mis pedidos')}}
-                </a>
+                    <a class="dropdown-item" href="{{ '#' }}">
+                        {{__('Mis pedidos')}}
+                    </a>
                 @endcan
                 <a class="dropdown-item" href="{{ '#' }}">
                     {{__('Mis datos')}}
@@ -38,5 +39,19 @@
                 </form>
             </div>
         </li>
+
     @endguest
+    @can('create_products')
+    @else
+
+        <li class="nav-item">
+            <a href="{{route('cart')}}" class="nav-link text-primary-dark position-relative">
+                <i class="text-primary-dark fa fa-shopping-cart"></i>
+                    <span class="position-absolute badge rounded-pill bg-danger">
+                        <span class="cart-number-items">0</span>
+                        <span class="visually-hidden">Cart</span>
+                    </span>
+            </a>
+        </li>
+    @endcan
 </ul>

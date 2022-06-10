@@ -85,8 +85,4 @@ class ProductController extends Controller
         $product->delete();
     }
 
-    public function showProduct(Product $product)
-    {
-        return view('all.product_view', ['product' => $product]);
-    }
 }

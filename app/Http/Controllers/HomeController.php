@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
 
 class HomeController extends Controller
 {
@@ -27,13 +25,17 @@ class HomeController extends Controller
      */
     public function index()
     {
+
         if (Auth::check()) {
             if (Auth::user()->hasRole(['admin', 'super_admin'])) {
                 return view('admin.home');
-            } else if (Auth::check()) {
-                return view('client.home');
             }
         }
+        else {
+                $products = Product::query()->with(['product_category'])->where('stock', '>', 0)->orderBy('created_at')->orderBy('updated_at')->get();
+                return view('home', ['products' => $products]);
+            }
+
 
         return view('home');
 
@@ -103,8 +105,13 @@ class HomeController extends Controller
 
     }
 
-
-    function getWeeksBetween($startDate, $endDate)
+    /**
+     * @param $startDate
+     * @param $endDate
+     * @return float|int
+     * @throws \Exception
+     */
+    private function getWeeksBetween($startDate, $endDate): float|int
     {
         $startDate = new \DateTime($startDate);
         $endDate = new \DateTime($endDate);
@@ -119,7 +126,7 @@ class HomeController extends Controller
     /**
      * @return array
      */
-    public function getWeekArray(): array
+    private function getWeekArray(): array
     {
         $array = [];
 

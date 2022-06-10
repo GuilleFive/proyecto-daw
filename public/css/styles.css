@@ -97,10 +97,12 @@ input[aria-controls=DataTables_Table_0], input[aria-controls=DataTables_Table_0]
     color: #dee2e6;
 }
 
-.card-body {
+.card-body, .card-footer {
     background-color: #212529;
     color: #dee2e6;
+    border-color: #dee2e6;
 }
+
 
 .button-primary-dark {
     color: #dee2e6;
@@ -143,7 +145,11 @@ input[aria-controls=DataTables_Table_0], input[aria-controls=DataTables_Table_0]
     color: #2891de;
 }
 
-.pagination{
+a .text-primary-dark:hover {
+    color: #4ab1ff;
+}
+
+.pagination {
     justify-content: center;
 }
 
@@ -172,7 +178,8 @@ input[aria-controls=DataTables_Table_0], input[aria-controls=DataTables_Table_0]
     margin-left: 5em;
     text-align: center;
 }
-.dt-buttons{
+
+.dt-buttons {
     width: -webkit-fit-content;
     width: -moz-fit-content;
     width: fit-content;
@@ -217,7 +224,7 @@ input[aria-controls=DataTables_Table_0], input[aria-controls=DataTables_Table_0]
     box-shadow: 0 0 0 0.25rem rgba(49, 159, 32, 0.59);
 }
 
-.buttons-filter{
+.buttons-filter {
     margin-left: 1em;
 }
 
@@ -275,30 +282,42 @@ table .dropdown-menu.show {
     min-height: 50vh;
 }
 
-.sorting, .sorting_desc, .sorting_asc{
+.sorting, .sorting_desc, .sorting_asc {
     cursor: pointer;
 }
 
-.yajra-datatable td,.yajra-datatable th {
+.yajra-datatable td, .yajra-datatable th {
     min-width: 8em;
     text-align: center;
     vertical-align: center;
 }
 
-.hide{
+.hide {
     visibility: hidden;
 }
 
-.start-date, .end-date{
+.start-date, .end-date {
     background-color: #212529;
     color: #dee2e6;
     border: #d83131 1px solid;
 }
 
-.start-date:focus, .end-date:focus{
+.start-date:focus, .end-date:focus {
     background-color: #212529;
     color: #dee2e6;
     border: #d83131 1px solid;
+
+}
+
+.card p {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+
+.card-img-top.dark-background {
+
+    min-height: 15em;
 
 }
 
@@ -331,7 +350,7 @@ table .dropdown-menu.show {
 
 }
 
-.btn{
+.btn {
     min-width: 2.7em;
 }
 

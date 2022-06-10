@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductCategoryController;
@@ -33,16 +34,17 @@ Route::get('migrate', function () {
     return redirect()->route('home');
 });
 
+
 Auth::routes(['verify' => true]);
 
-Route::get('/', function () {
-    return redirect()->route('home');
+Route::group([], function () {
+    Route::get('/', function () {
+        return redirect()->route('home');
+    });
+    Route::get('home', [HomeController::class, 'index'])->name('home');
+    Route::get('cart', [CartController::class, 'getCart'])->name('cart');
+
 });
-
-Route::get('home', [HomeController::class, 'index'])->name('home');
-
-Route::get('product/view/{product}', [ProductController::class, 'showProduct'])->name('products.view');
-
 Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], function () {
 
     Route::get('home/salesByCategory', [HomeController::class, 'getSalesByCategoryData'])->name('home.salesByCategory');
