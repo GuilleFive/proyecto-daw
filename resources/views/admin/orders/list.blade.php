@@ -99,7 +99,7 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'user', name: 'user'},
-                    {data: 'product', name: 'product'},
+                    {data: 'productItem', name: 'productItem'},
                     {data: 'address', name: 'address_id'},
                     {data: 'cost', name: 'cost'},
                     {data: 'order_date', name: 'order_date'},
@@ -138,6 +138,7 @@
             function openViewModal(order) {
                 const oOrder = JSON.parse(order);
                 let products = getProducts(oOrder);
+
                 Swal.fire({
                     title: 'Productos',
                     icon: 'info',
@@ -152,15 +153,15 @@
 
             function getProducts(order) {
                 let products = [];
-                for (const product of order.product) {
-                    products[product.name] ?
-                        products[product.name]++ :
-                        products[product.name] = 1;
+                for (const productItem of order.productItem) {
+                    products[productItem.name] ?
+                        products[productItem.name]++ :
+                        products[productItem.name] = 1;
                 }
-
                 let countProducts = '';
+
                 for (const name of Object.keys(products)) {
-                    countProducts +=`<p>${name} x ${products[name]}</p>`
+                    countProducts += `<p>${name} x ${products[name]}</p>`
                 }
 
                 return countProducts;

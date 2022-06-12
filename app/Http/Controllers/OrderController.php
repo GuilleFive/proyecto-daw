@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
@@ -52,5 +54,30 @@ class OrderController extends Controller
                 ->blacklist(['action', 'price'])
                 ->make(true);
         }
+        return null;
+    }
+
+    function form(Request $request)
+    {
+
+        $addresses = Address::query()->where('user_id', Auth::user()->id)->get();
+
+        $arrayProducts = $request->except('_token', 'total');
+
+        $products = [];
+        foreach ($arrayProducts as $productString){
+
+            $productItem = json_decode($productString);
+            $product = Product::query()->where('id', $productItem->id)->first();
+            $products[] = ['product' => json_encode($product),'amount' => $productItem->amount];
+        }
+        return view('client.orders.form', ['addresses' => $addresses, 'products' => json_encode($products), 'total' => $request->total]);
+
+    }
+
+    public function createOrder(Request $request){
+
+        return view('client.orders.done');
+
     }
 }

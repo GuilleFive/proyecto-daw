@@ -46,15 +46,26 @@
 <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
 <script>
+    @can('create_products')
+        @else
     window.addEventListener('load', changeNumberItem);
 
     function  changeNumberItem(){
         const numberItems = document.querySelector('.cart-number-items');
         const products = JSON.parse(localStorage.cart || null);
 
-        numberItems.textContent = products?.length || 0;
+        if(products) {
+            let cartAmount = 0;
+            for (const productItem of products) {
+                cartAmount+=productItem.amount;
+            }
+            numberItems.textContent = `${cartAmount}`;
+        }
+        else
+            numberItems.textContent = `0`;
 
     }
+    @endcan
 </script>
 @stack('scripts')
 </body>

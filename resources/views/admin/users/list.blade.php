@@ -10,7 +10,6 @@
                 <th>{{__('Usuario')}}</th>
                 <th>{{__('Email')}}</th>
                 <th>{{__('Teléfono')}}</th>
-                <th>{{__('Dirección')}}</th>
                 <th>{{__('Acción')}}</th>
             </tr>
             </thead>
@@ -67,7 +66,6 @@
                     {data: 'username', name: 'username'},
                     {data: 'email', name: 'email'},
                     {data: 'phone', name: 'phone'},
-                    {data: 'address', name: 'address'},
                     {
                         data: 'action',
                         name: 'action',

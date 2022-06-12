@@ -26,18 +26,12 @@ class HomeController extends Controller
     public function index()
     {
 
-        if (Auth::check()) {
-            if (Auth::user()->hasRole(['admin', 'super_admin'])) {
-                return view('admin.home');
-            }
+        if (Auth::check() && Auth::user()->hasRole(['admin', 'super_admin'])) {
+            return view('admin.home');
         }
-        else {
-                $products = Product::query()->with(['product_category'])->where('stock', '>', 0)->orderBy('created_at')->orderBy('updated_at')->get();
-                return view('home', ['products' => $products]);
-            }
+        $products = Product::query()->with(['product_category'])->where('stock', '>', 0)->orderBy('created_at')->orderBy('updated_at')->get();
+        return view('home', ['products' => $products]);
 
-
-        return view('home');
 
     }
 
@@ -95,10 +89,10 @@ class HomeController extends Controller
 
         $products = [];
         foreach ($orders as $order)
-            foreach ($order->product as $product){
-                !isset($products[$product->name])?
-                $products[$product->name] = 1:
-                $products[$product->name]++;
+            foreach ($order->product as $product) {
+                !isset($products[$product->name]) ?
+                    $products[$product->name] = 1 :
+                    $products[$product->name]++;
             }
 
         return array_search(max($products), $products);

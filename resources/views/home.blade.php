@@ -11,16 +11,24 @@
                             <div class="card-body d-flex flex-wrap justify-content-center align-content-around h-100">
                                 <h5 class="card-title">{{$product->name}}</h5>
                                 <p class="card-text w-100">{{$product->description}}</p>
-                                <div class="align-self-end w-100">
+                                <div class="align-self-end d-flex justify-content-between w-100">
                                     @if($product->stock < 6)
-                                    <p class="card-text text-danger"
-                                       title="¡Quedan pocas unidades!">
-                                        Solo {{$product->stock}} unidades</p>
-                                    @else
-                                    <p class="card-text text-success">
-                                        En stock</p>
-                                    @endif
+                                        @if($product->stock === 1)
+                                            <p class="card-text text-danger"
+                                               title="¡¡Queda una unidad!!">
+                                                Solo {{$product->stock}} unidad</p>
+                                        @else
+                                        <p class="card-text text-danger"
+                                           title="¡Quedan pocas unidades!">
+                                            Solo {{$product->stock}} unidades</p>
 
+                                        @endif
+                                    @else
+                                        <p class="card-text text-success">
+                                            En stock</p>
+                                    @endif
+                                    <p class="card-text h3">
+                                        {{$product->price}}€</p>
                                     <button type="button" data-product="{{json_encode($product)}}"
                                             class="btn button-primary-outline-dark align-self-end float-md-end add-cart">
                                         <i class="fa fa-cart-plus"></i></button>
@@ -36,19 +44,35 @@
     @push('scripts')
         <script>
             document.querySelectorAll('.add-cart').forEach(element => {
-                element.addEventListener('click', () => {
-
+                element.addEventListener('click', (e) => {
+                    e.preventDefault();
                     const arrayProducts = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
                     const product = element.dataset.product;
 
-                    arrayProducts.push({'product': product});
+                    if (arrayProducts.length === 0)
+                        arrayProducts.push({'product': product, 'amount': 1});
+                    else if (checkNewProduct(arrayProducts, product))
+                        arrayProducts.push({'product': product, 'amount': 1});
+
+
                     localStorage.setItem('cart', JSON.stringify(arrayProducts));
 
                     changeNumberItem();
                 })
             })
 
+            function checkNewProduct(arrayProducts, product) {
 
+                for (const element of arrayProducts) {
+
+                    if (element.product === product) {
+                        element.amount++;
+                        return false;
+                    }
+                }
+
+                return true;
+            }
         </script>
     @endpush
 @endsection

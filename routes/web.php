@@ -43,8 +43,14 @@ Route::group([], function () {
     });
     Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::get('cart', [CartController::class, 'getCart'])->name('cart');
-
 });
+
+Route::group(['middleware' => ['can:make_orders', 'verified', 'auth']], function () {
+    Route::post('orders/form', [OrderController::class, 'form'])->name('orders.form');
+    Route::post('orders/done', [OrderController::class, 'createOrder'])->name('orders.post');
+});
+
+
 Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], function () {
 
     Route::get('home/salesByCategory', [HomeController::class, 'getSalesByCategoryData'])->name('home.salesByCategory');

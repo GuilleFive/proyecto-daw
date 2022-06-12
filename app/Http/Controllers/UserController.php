@@ -19,9 +19,9 @@ class UserController extends Controller
                 $data = User::query();
 
             if ($request->admins === "true") {
-                $data = $data->role(['admin'])->with(['roles', 'address']);
+                $data = $data->role(['admin'])->with(['roles']);
             } elseif (Auth::user()->hasRole('super_admin')) {
-                $data = $data->role(['admin', 'client'])->with(['roles', 'address']);
+                $data = $data->role(['admin', 'client'])->with(['roles']);
             } else
                 $data = $data->role(['admin', 'client'])->with(['address']);
 
@@ -35,12 +35,6 @@ class UserController extends Controller
                 })
                 ->addColumn('role', function ($user) {
                     return ucfirst($user->roles->first()->name);
-                })
-                ->addColumn('address', function ($user) {
-                    if (isset($user->address)) {
-                        return ($user->address->name);
-                    } else
-                        return '-';
                 })
                 ->rawColumns(['action'])
                 ->blacklist(['action'])

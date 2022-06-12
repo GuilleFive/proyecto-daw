@@ -47,7 +47,7 @@
         <li class="nav-item">
             <a href="{{route('cart')}}" class="nav-link text-primary-dark position-relative">
                 <i class="text-primary-dark fa fa-shopping-cart"></i>
-                    <span class="position-absolute badge rounded-pill bg-danger">
+                <span class="position-absolute badge rounded-pill bg-danger">
                         <span class="cart-number-items">0</span>
                         <span class="visually-hidden">Cart</span>
                     </span>
