@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -46,6 +47,10 @@ Route::group([], function () {
 });
 
 Route::group(['middleware' => ['can:make_orders', 'verified', 'auth']], function () {
+
+    Route::post('addresses/post', [AddressController::class, 'createAddress'])->name('addresses.post');
+    Route::delete('addresses/delete', [AddressController::class, 'deleteAddress'])->name('addresses.delete');
+
     Route::post('orders/form', [OrderController::class, 'form'])->name('orders.form');
     Route::post('orders/done', [OrderController::class, 'createOrder'])->name('orders.post');
 });

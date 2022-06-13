@@ -4,39 +4,42 @@
     <div class="container ps-4 mb-3">
         <div class="row">
             @foreach($products as $product)
-                <div class="cold-12 col-md-6 col-xl-3 mb-5">
-                    <a href="#" class="text-decoration-none">
-                        <div class="card h-100">
-                            <img class="card-img-top dark-background" src="" alt="Card image cap">
-                            <div class="card-body d-flex flex-wrap justify-content-center align-content-around h-100">
-                                <h5 class="card-title">{{$product->name}}</h5>
-                                <p class="card-text w-100">{{$product->description}}</p>
-                                <div class="align-self-end d-flex justify-content-between w-100">
-                                    @if($product->stock < 6)
-                                        @if($product->stock === 1)
-                                            <p class="card-text text-danger"
-                                               title="¡¡Queda una unidad!!">
-                                                Solo {{$product->stock}} unidad</p>
-                                        @else
-                                        <p class="card-text text-danger"
-                                           title="¡Quedan pocas unidades!">
-                                            Solo {{$product->stock}} unidades</p>
+                @if($product->stock > 0)
+                    <div class="cold-12 col-md-6 col-xl-3 mb-5">
+                        <a href="#" class="text-decoration-none">
+                            <div class="card h-100">
+                                <img class="card-img-top dark-background" src="" alt="Card image cap">
+                                <div
+                                    class="card-body d-flex flex-wrap justify-content-center align-content-around h-100">
+                                    <h5 class="card-title">{{$product->name}}</h5>
+                                    <p class="card-text w-100">{{$product->description}}</p>
+                                    <div class="align-self-end d-flex justify-content-between w-100">
+                                        @if($product->stock < 6)
+                                            @if($product->stock === 1)
+                                                <p class="card-text text-danger"
+                                                   title="¡¡Queda una unidad!!">
+                                                    Solo {{$product->stock}} unidad</p>
+                                            @else
+                                                <p class="card-text text-danger"
+                                                   title="¡Quedan pocas unidades!">
+                                                    Solo {{$product->stock}} unidades</p>
 
+                                            @endif
+                                        @else
+                                            <p class="card-text text-success">
+                                                En stock</p>
                                         @endif
-                                    @else
-                                        <p class="card-text text-success">
-                                            En stock</p>
-                                    @endif
-                                    <p class="card-text h3">
-                                        {{$product->price}}€</p>
-                                    <button type="button" data-product="{{json_encode($product)}}"
-                                            class="btn button-primary-outline-dark align-self-end float-md-end add-cart">
-                                        <i class="fa fa-cart-plus"></i></button>
+                                        <p class="card-text h3">
+                                            {{$product->price}}€</p>
+                                        <button type="button" data-product="{{json_encode($product)}}"
+                                                class="btn button-primary-outline-dark align-self-end float-md-end add-cart">
+                                            <i class="fa fa-cart-plus"></i></button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                @endif
 
             @endforeach
         </div>

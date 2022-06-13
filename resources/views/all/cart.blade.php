@@ -44,22 +44,20 @@
                     const form = document.querySelector('#checkout-form');
 
                     let total = 0;
-                    let cont = 0;
 
                     products.innerHTML = '<div class="d-flex flex-column">';
                     form.innerHTML = `@csrf`;
                     for (const productItem of cart) {
                         const oProduct = JSON.parse(productItem.product);
 
-                        form.innerHTML += `<input type="hidden" name="product-${cont}" value='${JSON.stringify({id: oProduct.id, amount: productItem.amount })}'>`;
+                        form.innerHTML += `<input type="hidden" name="products[]" value='${JSON.stringify({id: oProduct.id, amount: productItem.amount })}'>`;
                         products.innerHTML += `<div class="row align-items-center align-content-center mb-5"><div class="col-12 col-md-5">${oProduct.name}</div><div class="d-none d-md-block col-md-2"></div> <div class="col-12 col-md-5 mt-3 mt-md-0 text-md-end"><button type="button" class="btn btn-outline-danger minus">-</button><input type="text" class="form-control input-amount" readonly value="${productItem.amount}"> <input type="hidden" value="${oProduct.id}"> <button type="button" class="btn btn-outline-success plus">+</button> <button type="button" class="btn text-primary-dark remove-item">Eliminar de la lista</button></div></div>`;
 
                         total += oProduct.price * productItem.amount;
-                        cont++;
                     }
 
                     products.innerHTML += '</div>';
-                    form.innerHTML += `<input type="hidden" name="total" value='${total}'><button class="btn button-primary-dark float-end button-checkout">Tramitar pedido</button>`;
+                    form.innerHTML += `<input type="hidden" name="total" value='${Math.round(total * 100) / 100}'><button class="btn button-primary-dark float-end button-checkout">Tramitar pedido</button>`;
 
                     document.querySelectorAll('.total-cost').forEach(element => {
                         element.textContent = `Total: ${Math.round(total * 100) / 100}€`;

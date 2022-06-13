@@ -22,6 +22,7 @@
                 <th>{{__('Usuario')}}</th>
                 <th>{{__('Nº de Productos')}}</th>
                 <th>{{__('Dirección')}}</th>
+                <th>{{__('Código Postal')}}</th>
                 <th>{{__('Coste Total')}}</th>
                 <th>{{__('Fecha pedido')}}</th>
                 <th>{{__('Fecha entrega')}}</th>
@@ -100,7 +101,8 @@
                     {data: 'id', name: 'id'},
                     {data: 'user', name: 'user'},
                     {data: 'productItem', name: 'productItem'},
-                    {data: 'address', name: 'address_id'},
+                    {data: 'address', name: 'address'},
+                    {data: 'postal_code', name: 'postal_code'},
                     {data: 'cost', name: 'cost'},
                     {data: 'order_date', name: 'order_date'},
                     {data: 'delivery_date', name: 'delivery_date'},

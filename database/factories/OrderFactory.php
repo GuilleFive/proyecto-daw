@@ -22,6 +22,9 @@ class OrderFactory extends Factory
         return [
             'delivery_date' => $delivery,
             'order_date' => $order,
+            'address' => $this->faker->streetAddress(),
+            'postal_code' => $this->faker->postcode(),
+
         ];
     }
 }

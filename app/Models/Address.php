@@ -22,7 +22,5 @@ class Address extends Model
     public function user(){
         return $this->belongsToMany(User::class);
     }
-    public function order(){
-        return $this->hasOne(Order::class);
-    }
+
 }

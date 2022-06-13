@@ -12,6 +12,7 @@ class Order extends Model
     protected $fillable = [
         'delivery_date',
         'order_date',
+        'address',
     ];
 
     public function user()
@@ -22,11 +23,6 @@ class Order extends Model
     public function product()
     {
         return $this->belongsToMany(Product::class)->withTrashed();
-    }
-
-    public function address()
-    {
-        return $this->belongsTo(Address::class);
     }
 
 }

@@ -145,8 +145,8 @@
                                 url: '{{route('product_categories.post')}}',
                                 type: 'POST',
                                 data: {
-                                    'name': document.querySelector('#category-name').value,
-                                    'description': document.querySelector('#category-description').value,
+                                    'name': document.querySelector('#category-name').value.trim(),
+                                    'description': document.querySelector('#category-description').value.trim(),
                                 },
                             }).success(
                                 data => {
