@@ -21,7 +21,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title h4 total-cost">Total: 0,00€</h5>
-                            <form action="{{route('orders.form')}}" id="checkout-form" method="POST"></form>
+                            <form action="{{route('orders.form')}}" id="checkout-form" method="GET"></form>
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                     let total = 0;
 
                     products.innerHTML = '<div class="d-flex flex-column">';
-                    form.innerHTML = `@csrf`;
+                    form.innerHTML = ``;
                     for (const productItem of cart) {
                         const oProduct = JSON.parse(productItem.product);
 
@@ -108,7 +108,7 @@
                 for (const productItem of cart) {
                     const oProduct = JSON.parse(productItem.product);
                     if (oProduct.id === parseInt(productId)) {
-                        if (parseInt(element.value.trim()) <= 250)
+                        if (parseInt(element.value.trim()) <= 250 && parseInt(element.value.trim()) > 0)
                             productItem.amount = parseInt(element.value.trim());
 
                     }

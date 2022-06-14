@@ -85,4 +85,11 @@ class ProductController extends Controller
         $product->delete();
     }
 
+    function showProduct(Product $product)
+    {
+
+        return view('all.products.products_view', ['product' => json_encode($product)]);
+
+    }
+
 }

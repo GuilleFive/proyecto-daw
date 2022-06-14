@@ -49,7 +49,8 @@
                                 <input type="hidden" name="products[]"
                                        value='{{json_encode(['product' => $productItem->product,'amount' => $productItem->amount])}}'>
                             @endforeach
-
+                                <input type="hidden" name="total"
+                                       value='{{$total}}'>
                             <div class="h3 float-end">Total: {{$total}}€</div>
                         </div>
                     </div>
@@ -74,7 +75,7 @@
             </div>
 
             <div class="col-12 col-lg-4 d-none d-lg-block">
-                <div class="d-flex flex-column dark-background address-chooser checkout-form-background mb-4">
+                <div class="d-flex flex-column dark-background checkout-form-background mb-4">
                     <p class="h2 mb-3 w-100">{{__('Resumen del pedido')}}</p>
 
                     <p class="w-100">{{__('Productos')}}: {{$amountProducts}}</p>

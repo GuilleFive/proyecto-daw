@@ -338,14 +338,10 @@ table .dropdown-menu.show {
     -moz-appearance: textfield;
 }
 
-
-.address-chooser {
-    padding: 1em;
-    border: #d83131 1px solid;
-}
-
 .checkout-form-background {
     background-color: rgba(36, 36, 44, 0.54);
+    padding: 1em;
+    border: #d83131 1px solid;
 }
 
 .spinner-wrapper {
@@ -402,15 +398,20 @@ table .dropdown-menu.show {
     left: 0;
     z-index: 3;
     padding: 7em 1.5em 1.5em;
-    overflow-y: scroll !important;
     max-width: 22em;
 }
 
-.sidebar::-webkit-scrollbar {
+.filters-container{
+    height: 90%;
+    overflow-y: scroll !important;
+
+}
+
+.filters-container::-webkit-scrollbar {
     display: none !important;
 }
 
-.sidebar {
+.filters-container {
     -ms-overflow-style: none !important;
     scrollbar-width: none !important;
 }
@@ -422,7 +423,25 @@ table .dropdown-menu.show {
     z-index: 4;
 }
 
+.pointer{
+    cursor: pointer;
+}
 
+.selected{
+    color: #d83131;
+}
+a.selected:hover{
+    color: #f15555;
+}
+
+.product-view{
+    border: 1px solid #d83131;
+    border-radius: 2px;
+}
+
+#search-input{
+    width: 95%;
+}
 @media screen and (max-width: 768px) {
 
     li.paginate_button.previous {

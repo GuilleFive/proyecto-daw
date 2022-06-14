@@ -66,6 +66,7 @@ class UserSeeder extends Seeder
     {
         Order::factory()->count(1000)->create([
             'user_id' => 1,
+            'total' => 0,
         ])->each(function ($order) {
             $address = $this->findRandomAddress();
 
@@ -73,15 +74,20 @@ class UserSeeder extends Seeder
             $order->address = $address->address;
             $order->postal_code = $address->postal_code;
             $product = $this->findRandomProduct();
-
+            $total = 0;
             for ($i = 0; $i < rand(1, 6); $i++) {
                 if (rand(1, 10) > 5) {
-                    for ($i = 0; $i < rand(1, 3); $i++)
+                    for ($i = 0; $i < rand(1, 3); $i++) {
                         $order->product()->attach($product);
+                        $total += Product::query()->find($product)->first()->price;
+                    }
                 }
-                $order->product()->attach($this->findRandomProduct());
-            }
+                $newProduct = $this->findRandomProduct();
+                $order->product()->attach($newProduct);
+                $total += Product::query()->find($newProduct)->first()->price;
 
+            }
+            $order->total = $total;
             $order->save();
         });
     }

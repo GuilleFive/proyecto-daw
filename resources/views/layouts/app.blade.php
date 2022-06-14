@@ -70,6 +70,20 @@
     }
     @endcan
 </script>
+<script defer>
+    function checkNewProduct(arrayProducts, product) {
+
+        for (const element of arrayProducts) {
+
+            if (element.product === product) {
+                element.amount++;
+                return false;
+            }
+        }
+
+        return true;
+    }
+</script>
 @stack('scripts')
 </body>
 </html>

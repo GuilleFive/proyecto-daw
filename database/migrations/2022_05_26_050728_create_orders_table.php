@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('postal_code');
             $table->date('order_date');
             $table->date('delivery_date')->nullable();
+            $table->float('total');
             $table->timestamps();
         });
     }

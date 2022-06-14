@@ -45,13 +45,8 @@ class OrderController extends Controller
                     return $order->postal_code;
                 })
                 ->addColumn('cost', function ($order) {
-                    $totalCost = 0;
 
-                    foreach ($order->product as $product) {
-                        $totalCost += $product->price;
-                    }
-
-                    return $totalCost . '€';
+                    return $order->total . '€';
                 })
                 ->rawColumns(['action'])
                 ->blacklist(['action', 'price'])
@@ -108,6 +103,7 @@ class OrderController extends Controller
             'postal_code' => $addressItem->postal_code,
             'order_date' => now(),
             'delivery_date' => null,
+            'total' => $request->total,
 
         ]);
         foreach ($request->products as $item) {
@@ -119,8 +115,12 @@ class OrderController extends Controller
             }
         }
 
+        return redirect('order/show/'.$order->id);
+    }
 
-        return view('client.orders.done');
+    public function showOrder (Order $order){
+
+        return view('client.orders.show', ['order' => $order]);
 
     }
 

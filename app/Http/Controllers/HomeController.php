@@ -140,39 +140,49 @@ class HomeController extends Controller
     public function getProducts(Request $request)
     {
         $products = Product::query()->with(['product_category'])->where('stock', '>', 0);
+        if (isset($request->name) && $request->name !== 'undefined') {
+            $products = $products->where('name', 'LIKE', "%$request->name%");
+            $order = 'new';
+            $category = '';
+            $totalProducts = count($products->get());
+        } else {
 
-        $category = '';
+            $category = '';
+            if (isset($request->name) && $request->name !== 'undefined') {
+                $products = $products->where('name', $request->name);
+            }
+            if (isset($request->category) && $request->category !== 'undefined') {
+                $products = $products->where('product_category_id', $request->category);
+                $category = $request->category;
+            }
 
-        if (isset($request->category) && $request->category !== 'undefined') {
-            $products = $products->where('product_category_id', $request->category);
-            $category = $request->category;
-        }
-
-        if (isset($request->order) && $request->order !== 'undefined') {
-            if ($request->order === 'old') {
-                $products = $products->orderBy('updated_at', 'ASC')->orderBy('created_at', 'ASC');
-                $order = 'old';
-            } elseif ($request->order === 'new') {
+            if (isset($request->order) && $request->order !== 'undefined') {
+                if ($request->order === 'old') {
+                    $products = $products->orderBy('updated_at', 'ASC')->orderBy('created_at', 'ASC');
+                    $order = 'old';
+                } elseif ($request->order === 'new') {
+                    $products = $products->orderBy('updated_at', 'DESC')->orderBy('created_at', 'DESC');
+                    $order = 'new';
+                } elseif ($request->order === 'cheap') {
+                    $products = $products->orderBy('price', 'ASC')->orderBy('updated_at', 'DESC')->orderBy('created_at', 'ASC');
+                    $order = 'cheap';
+                } else {
+                    $products = $products->orderBy('price', 'DESC')->orderBy('updated_at', 'DESC')->orderBy('created_at', 'ASC');
+                    $order = 'expen';
+                }
+            } else {
                 $products = $products->orderBy('updated_at', 'DESC')->orderBy('created_at', 'DESC');
                 $order = 'new';
-            } elseif ($request->order === 'cheap') {
-                $products = $products->orderBy('price', 'ASC')->orderBy('updated_at', 'DESC')->orderBy('created_at', 'ASC');
-                $order = 'cheap';
-            } else {
-                $products = $products->orderBy('price', 'DESC')->orderBy('updated_at', 'DESC')->orderBy('created_at', 'ASC');
-                $order = 'expen';
             }
-        } else {
-            $products = $products->orderBy('updated_at', 'DESC')->orderBy('created_at', 'DESC');
-            $order = 'new';
+            $totalProducts = count($products->get());
+            if (isset($request->length) && $request->category !== 'undefined')
+                $products = $products->limit($request->length);
+            else
+                $products = $products->limit(18);
         }
-        $totalProducts = count($products->get());
-        if (isset($request->length) && $request->category !== 'undefined')
-            $products = $products->limit($request->length);
-        else
-            $products = $products->limit(18);
 
         $products = $products->get();
+
 
         return json_encode(['products' => json_encode($products), 'length' => count($products), 'order' => $order, 'category' => $category, 'total' => $totalProducts]);
     }
@@ -182,9 +192,9 @@ class HomeController extends Controller
 
         $categories = ProductCategory::query()->orderBy('name')->get();
 
-        $response = '<p class="h5 ms-3 mb-4">Categorías</p><div class="d-flex flex-column ms-5">';
+        $response = '<p class="h5 ms-3 mb-4">Categorías</p><div class="d-flex flex-column ms-5"><a class="w-100 mb-2 text-primary-dark text-decoration-none filter-category pointer selected" data-category="">Todo</a>';
         foreach ($categories as $category) {
-            $response .= "<a class='w-100 mb-2 text-primary-dark text-decoration-none filter-category' data-category='$category->id'>$category->name</a>";
+            $response .= "<a class='w-100 mb-2 text-primary-dark text-decoration-none filter-category pointer' data-category='$category->id'>$category->name</a>";
         }
 
         $response .= '</div>';

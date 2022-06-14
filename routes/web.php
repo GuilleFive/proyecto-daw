@@ -46,6 +46,8 @@ Route::group([], function () {
     Route::post('home/getProducts', [HomeController::class, 'getProducts'])->name('home.products');
     Route::post('home/getCategories', [HomeController::class, 'getCategories'])->name('home.categories');
     Route::get('cart', [CartController::class, 'getCart'])->name('cart');
+
+    Route::get('products/view/{product}', [ProductController::class, 'showProduct'])->name('products.show');
 });
 
 Route::group(['middleware' => ['can:make_orders', 'verified', 'auth']], function () {
@@ -53,8 +55,13 @@ Route::group(['middleware' => ['can:make_orders', 'verified', 'auth']], function
     Route::post('addresses/post', [AddressController::class, 'createAddress'])->name('addresses.post');
     Route::delete('addresses/delete', [AddressController::class, 'deleteAddress'])->name('addresses.delete');
 
-    Route::post('orders/form', [OrderController::class, 'form'])->name('orders.form');
-    Route::post('orders/done', [OrderController::class, 'createOrder'])->name('orders.post');
+    Route::get('orders/form', [OrderController::class, 'form'])->name('orders.form');
+    Route::post('orders/post', [OrderController::class, 'createOrder'])->name('orders.post');
+    Route::post('orders/done', function () {
+        return view('client.orders.done');
+    })->name('orders.done');
+
+    Route::get('orders/show/{order}', [OrderController::class, 'showOrder'])->name('orders.show');
 });
 
 
