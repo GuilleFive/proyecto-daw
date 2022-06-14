@@ -82,14 +82,14 @@
 
             function finishDrawing() {
                 document.querySelectorAll('.products-delete-btn').forEach(element => {
-                    element.addEventListener('click', () => openDeleteModal(element.dataset.productItem));
+                    element.addEventListener('click', () => openDeleteModal(element.dataset.product));
                 });
                 dataTable.button(0).enable(true);
                 dataTable.button(1).enable(true);
             }
 
-            function openViewModal(productItem) {
-                const oProduct = JSON.parse(productItem);
+            function openViewModal(product) {
+                const oProduct = JSON.parse(product);
                 Swal.fire({
                     title: oProduct.name,
                     icon: 'info',
@@ -104,8 +104,8 @@
 
 
 
-            function openDeleteModal(productItem) {
-                const oProduct = JSON.parse(productItem);
+            function openDeleteModal(product) {
+                const oProduct = JSON.parse(product);
                 Swal.fire({
                     title: '¿Desea eliminar este producto?',
                     html: `ID: ${oProduct.id}<br><br>Nombre: ${oProduct.name}`,
@@ -132,7 +132,7 @@
                             url: '{{route('products.delete')}}',
                             type: 'DELETE',
                             data: {
-                                'productItem': productItem
+                                'product': product
                             },
                         }).success(
                             () => {

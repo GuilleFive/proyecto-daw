@@ -17,6 +17,7 @@ section {
     text-align: left;
     font: normal 16px sans-serif;
     padding: 45px 50px;
+    z-index: 10;
 }
 
 .footer__distributed .footer__left p {

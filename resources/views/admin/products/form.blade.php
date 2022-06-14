@@ -4,14 +4,14 @@
     <div class="container ">
         <h2>{{__($form.' producto')}}</h2>
         <div class="d-flex justify-content-center">
-            <form action="{{isset($productItem)?route('products.change'):route('products.post')}}" method="POST"
+            <form action="{{isset($product)?route('products.change'):route('products.post')}}" method="POST"
                   class="col-md-4">
                 @csrf
                 <div class="mb-3">
                     <label for="name" class="form-label">{{__('Nombre')}}</label>
                     <input type="text" name="name" class="form-control @error('name')is-invalid @enderror"
-                           @isset($productItem)
-                           value="{{old('name')?old('name'):$productItem->name}}"
+                           @isset($product)
+                           value="{{old('name')?old('name'):$product->name}}"
                            @else
                            value="{{old('name')}}"
                            @endisset
@@ -26,7 +26,7 @@
                 <div class="mb-3">
                     <label for="description" class="form-label">{{__('Descripción')}}</label>
                     <textarea name="description" class="form-control @error('description')is-invalid @enderror"
-                              id="description">@isset($productItem){{old('description')?trim(old('description')):trim($productItem->description)}} @else{{trim(old('description'))}}@endisset</textarea>
+                              id="description">@isset($product){{old('description')?trim(old('description')):trim($product->description)}} @else{{trim(old('description'))}}@endisset</textarea>
                     @error('description')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -37,8 +37,8 @@
                     <label for="stock" class="form-label">{{__('Stock')}}</label>
                     <input type="number" min="0" max="255" name="stock"
                            class="form-control @error('stock')is-invalid @enderror"
-                           @isset($productItem)
-                           value="{{old('stock')?old('stock'):$productItem->stock}}"
+                           @isset($product)
+                           value="{{old('stock')?old('stock'):$product->stock}}"
                            @else
                            value="{{old('stock')}}"
                            @endisset
@@ -55,7 +55,7 @@
                     <select name="category" class="form-select" id="category">
                         @foreach($categories as $category)
                             <option value="{{$category->id}}"
-                                    @if($category->id === old('category') || (isset($productItem) && $category->id === $productItem->product_category_id))
+                                    @if($category->id === old('category') || (isset($product) && $category->id === $product->product_category_id))
                                     selected="selected"
                                     @endif
                                     name="{{$category->id}}">{{$category->name}}</option>
@@ -77,8 +77,8 @@
                     <label for="price" class="form-label">{{__('Precio (€)')}}</label>
                     <input type="number" min="3" max="5000.99" step="0.01" name="price"
                            class="form-control @error('price')is-invalid @enderror"
-                           @isset($productItem)
-                           value="{{old('price')?old('price'):$productItem->price}}"
+                           @isset($product)
+                           value="{{old('price')?old('price'):$product->price}}"
                            @else
                            value="{{old('price')}}"
                            @endisset
@@ -90,13 +90,13 @@
                     </span>
                     @enderror
                 </div>
-                @isset($productItem)
-                    <input type="hidden" name="id" value="{{$productItem->id}}">
+                @isset($product)
+                    <input type="hidden" name="id" value="{{$product->id}}">
                 @endisset
                 <div class="mb-5">
 
                     <button type="submit"
-                            class="btn btn-primary button-primary-dark">{{isset($productItem)?__('Editar'):__('Añadir')}}</button>
+                            class="btn btn-primary button-primary-dark">{{isset($product)?__('Editar'):__('Añadir')}}</button>
                     <a href="{{url()->previous() !== route('products.create')?url()->previous():route('home')}}"
                        class="btn btn-secondary">{{__('Volver')}}</a>
                 </div>

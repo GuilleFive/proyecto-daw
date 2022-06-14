@@ -44,7 +44,7 @@
     @can('create_products')
     @else
 
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-block">
             <a href="{{route('cart')}}" class="nav-link text-primary-dark position-relative">
                 <i class="text-primary-dark fa fa-shopping-cart"></i>
                 <span class="position-absolute badge rounded-pill bg-danger">

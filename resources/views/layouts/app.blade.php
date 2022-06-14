@@ -47,22 +47,25 @@
 <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
 <script>
     @can('create_products')
-        @else
+    @else
     window.addEventListener('load', changeNumberItem);
 
-    function  changeNumberItem(){
-        const numberItems = document.querySelector('.cart-number-items');
+    function changeNumberItem() {
+        const numberItems = document.querySelectorAll('.cart-number-items');
         const products = JSON.parse(localStorage.cart || null);
 
-        if(products) {
+        if (products) {
             let cartAmount = 0;
             for (const productItem of products) {
-                cartAmount+=productItem.amount;
+                cartAmount += productItem.amount;
             }
-            numberItems.textContent = `${cartAmount}`;
-        }
-        else
-            numberItems.textContent = `0`;
+            numberItems.forEach(element => {
+                element.textContent = `${cartAmount}`
+            });
+        } else
+            numberItems.forEach(element => {
+                element.textContent = `0`
+            });
 
     }
     @endcan

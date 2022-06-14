@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductCategory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -29,7 +31,8 @@ class HomeController extends Controller
         if (Auth::check() && Auth::user()->hasRole(['admin', 'super_admin'])) {
             return view('admin.home');
         }
-        $products = Product::query()->with(['product_category'])->where('stock', '>', 0)->orderBy('created_at')->orderBy('updated_at')->get();
+        $products = Product::query()->with(['product_category'])->where('stock', '>', 0)->orderBy('updated_at', 'DESC')->orderBy('created_at', 'DESC')->limit(17)->get();
+
         return view('home', ['products' => $products]);
 
 
@@ -132,6 +135,61 @@ class HomeController extends Controller
         $array['Sat'] = 0;
         $array['Sun'] = 0;
         return $array;
+    }
+
+    public function getProducts(Request $request)
+    {
+        $products = Product::query()->with(['product_category'])->where('stock', '>', 0);
+
+        $category = '';
+
+        if (isset($request->category) && $request->category !== 'undefined') {
+            $products = $products->where('product_category_id', $request->category);
+            $category = $request->category;
+        }
+
+        if (isset($request->order) && $request->order !== 'undefined') {
+            if ($request->order === 'old') {
+                $products = $products->orderBy('updated_at', 'ASC')->orderBy('created_at', 'ASC');
+                $order = 'old';
+            } elseif ($request->order === 'new') {
+                $products = $products->orderBy('updated_at', 'DESC')->orderBy('created_at', 'DESC');
+                $order = 'new';
+            } elseif ($request->order === 'cheap') {
+                $products = $products->orderBy('price', 'ASC')->orderBy('updated_at', 'DESC')->orderBy('created_at', 'ASC');
+                $order = 'cheap';
+            } else {
+                $products = $products->orderBy('price', 'DESC')->orderBy('updated_at', 'DESC')->orderBy('created_at', 'ASC');
+                $order = 'expen';
+            }
+        } else {
+            $products = $products->orderBy('updated_at', 'DESC')->orderBy('created_at', 'DESC');
+            $order = 'new';
+        }
+        $totalProducts = count($products->get());
+        if (isset($request->length) && $request->category !== 'undefined')
+            $products = $products->limit($request->length);
+        else
+            $products = $products->limit(18);
+
+        $products = $products->get();
+
+        return json_encode(['products' => json_encode($products), 'length' => count($products), 'order' => $order, 'category' => $category, 'total' => $totalProducts]);
+    }
+
+    public function getCategories()
+    {
+
+        $categories = ProductCategory::query()->orderBy('name')->get();
+
+        $response = '<p class="h5 ms-3 mb-4">Categorías</p><div class="d-flex flex-column ms-5">';
+        foreach ($categories as $category) {
+            $response .= "<a class='w-100 mb-2 text-primary-dark text-decoration-none filter-category' data-category='$category->id'>$category->name</a>";
+        }
+
+        $response .= '</div>';
+
+        return $response;
     }
 
 

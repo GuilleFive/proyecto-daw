@@ -43,6 +43,8 @@ Route::group([], function () {
         return redirect()->route('home');
     });
     Route::get('home', [HomeController::class, 'index'])->name('home');
+    Route::post('home/getProducts', [HomeController::class, 'getProducts'])->name('home.products');
+    Route::post('home/getCategories', [HomeController::class, 'getCategories'])->name('home.categories');
     Route::get('cart', [CartController::class, 'getCart'])->name('cart');
 });
 
@@ -77,13 +79,13 @@ Route::group(['middleware' => ['can:create_products', 'verified', 'auth']], func
     Route::delete('products/delete', [ProductController::class, 'deleteProduct'])->name('products.delete');
 
 
-
     Route::get('orders', function () {
         return view('admin.orders.list');
     })->name('orders');
     Route::post('orders/list', [OrderController::class, 'getOrders'])->name('orders.list');
-
+    Route::patch('orders/deliver', [OrderController::class, 'deliverOrder'])->name('orders.deliver');
 });
+
 
 Route::group(['middleware' => ['can:create_admins', 'verified', 'auth']], function () {
 

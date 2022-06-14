@@ -100,7 +100,7 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'user', name: 'user'},
-                    {data: 'productItem', name: 'productItem'},
+                    {data: 'product', name: 'product'},
                     {data: 'address', name: 'address'},
                     {data: 'postal_code', name: 'postal_code'},
                     {data: 'cost', name: 'cost'},
@@ -132,6 +132,9 @@
                 document.querySelectorAll('.orders-view-btn').forEach(element => {
                     element.addEventListener('click', () => openViewModal(element.dataset.order));
                 });
+                document.querySelectorAll('.orders-deliver-btn').forEach(element => {
+                    element.addEventListener('click', () => openDeliverModal(element.dataset.order));
+                });
                 dataTable.button(0).enable(true);
                 dataTable.button(1).enable(true);
                 dataTable.button(2).enable(true);
@@ -155,10 +158,10 @@
 
             function getProducts(order) {
                 let products = [];
-                for (const productItem of order.productItem) {
-                    products[productItem.name] ?
-                        products[productItem.name]++ :
-                        products[productItem.name] = 1;
+                for (const product of order.product) {
+                    products[product.name] ?
+                        products[product.name]++ :
+                        products[product.name] = 1;
                 }
                 let countProducts = '';
 
@@ -167,6 +170,64 @@
                 }
 
                 return countProducts;
+            }
+
+            function openDeliverModal(order) {
+                const oOrder = JSON.parse(order);
+                Swal.fire({
+                    title: '¿Desea entregar este pedido?',
+                    html: `ID: ${oOrder.id}<br><br>Usuario: ${oOrder.user.name}<br><br>Fecha del pedido: ${oOrder.order_date}`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#2891de',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: 'Entregar',
+                    color: '#dee2e6',
+                    iconColor: '#ff852d',
+                    background: '#24292d',
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': '{{csrf_token()}}',
+                            }
+                        });
+
+                        $.ajax({
+                            url: '{{route('orders.deliver')}}',
+                            type: 'PATCH',
+                            data: {
+                                'order': oOrder.id
+                            },
+                        }).success(
+                            () => {
+                                dataTable.draw();
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Pedido entregado',
+                                    showConfirmButton: false,
+                                    timer: 1100,
+                                    color: '#dee2e6',
+                                    iconColor: '#85ff3e',
+                                    background: '#24292d',
+                                });
+                            }).fail(
+                            () => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error de conexión',
+                                    text: 'Inténtelo de nuevo',
+                                    showConfirmButton: true,
+                                    color: '#dee2e6',
+                                    iconColor: '#d83131',
+                                    background: '#24292d',
+                                })
+                            })
+                    }
+                })
             }
 
         </script>

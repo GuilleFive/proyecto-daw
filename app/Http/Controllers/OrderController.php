@@ -72,11 +72,18 @@ class OrderController extends Controller
 
             if (json_decode($item)->amount > $product->stock) {
 
-                return redirect()->route('cart')->withErrors(['product_name' => $product->name, 'message' => 'Has pedido demasiadas unidades, quedan: ' . $product->stock . ' unidades']);
+                if ($product->stock !== 1)
+                    $message = 'Solo quedan ' . $product->stock . ' unidades';
+
+                else
+                    $message = 'Solo queda ' . $product->stock . ' unidad';
+
+
+                return redirect()->back()->with('product_name', $product->name)->with('message', $message);
 
             }
 
-            $amountProducts += 1*json_decode($item)->amount;
+            $amountProducts += 1 * json_decode($item)->amount;
         }
 
         $products = [];
@@ -93,25 +100,37 @@ class OrderController extends Controller
 
     public function createOrder(Request $request)
     {
+        $addressItem = Address::query()->find($request->addresses)->first();
 
         $order = Order::factory()->create([
             'user_id' => Auth::user()->id,
-            'address' => $request->addresses,
+            'address' => $addressItem->address,
+            'postal_code' => $addressItem->postal_code,
             'order_date' => now(),
             'delivery_date' => null,
 
         ]);
         foreach ($request->products as $item) {
             $product = Product::query()->where('id', json_decode(json_decode($item)->product)->id)->first();
-            $order->product()->attach($product);
-            $product->stock = $product->stock-json_decode($item)->amount;
-            $product->save();
+            for ($i = 0; $i < json_decode($item)->amount; $i++) {
+                $order->product()->attach($product);
+                $product->stock = $product->stock - json_decode($item)->amount;
+                $product->save();
+            }
         }
-
-
 
 
         return view('client.orders.done');
 
+    }
+
+    public function deliverOrder(Request $request)
+    {
+
+        $order = Order::query()->find($request->order);
+
+        $order->delivery_date = now();
+
+        $order->save();
     }
 }

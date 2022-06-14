@@ -50,8 +50,11 @@
                     for (const productItem of cart) {
                         const oProduct = JSON.parse(productItem.product);
 
-                        form.innerHTML += `<input type="hidden" name="products[]" value='${JSON.stringify({id: oProduct.id, amount: productItem.amount })}'>`;
-                        products.innerHTML += `<div class="row align-items-center align-content-center mb-5"><div class="col-12 col-md-5">${oProduct.name}</div><div class="d-none d-md-block col-md-2"></div> <div class="col-12 col-md-5 mt-3 mt-md-0 text-md-end"><button type="button" class="btn btn-outline-danger minus">-</button><input type="text" class="form-control input-amount" readonly value="${productItem.amount}"> <input type="hidden" value="${oProduct.id}"> <button type="button" class="btn btn-outline-success plus">+</button> <button type="button" class="btn text-primary-dark remove-item">Eliminar de la lista</button></div></div>`;
+                        form.innerHTML += `<input type="hidden" name="products[]" value='${JSON.stringify({
+                            id: oProduct.id,
+                            amount: productItem.amount
+                        })}'>`;
+                        products.innerHTML += `<div class="row align-items-center align-content-center mb-5"><div class="col-12 col-md-5">${oProduct.name}</div><div class="d-none d-md-block col-md-2"></div> <div class="col-12 col-md-5 mt-3 mt-md-0 text-md-end"><button type="button" class="btn btn-outline-danger minus">-</button><input type="number" class="form-control input-amount" min="0" max="250" value="${productItem.amount}"> <input type="hidden" value="${oProduct.id}"> <button type="button" class="btn btn-outline-success plus">+</button> <button type="button" class="btn text-primary-dark remove-item">Eliminar de la lista</button></div></div>`;
 
                         total += oProduct.price * productItem.amount;
                     }
@@ -72,6 +75,8 @@
                     document.querySelector('.total-cost').textContent = `Total: 0,00€`;
                     document.querySelector('.products').innerHTML = '';
                     document.querySelector('.checkout').classList.add('hide');
+                    document.querySelector('#checkout-form').outerHTML = '';
+
 
                 }
             }
@@ -92,6 +97,26 @@
 
                 });
 
+                document.querySelector('.input-amount').addEventListener('change', () => changeAmountManually(document.querySelector('.input-amount')));
+
+            }
+
+            function changeAmountManually(element) {
+                const productId = element.parentElement.querySelector('input[type = hidden]').value;
+                const cart = JSON.parse(localStorage.getItem('cart'));
+
+                for (const productItem of cart) {
+                    const oProduct = JSON.parse(productItem.product);
+                    if (oProduct.id === parseInt(productId)) {
+                        if (parseInt(element.value.trim()) <= 250)
+                            productItem.amount = parseInt(element.value.trim());
+
+                    }
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                refreshCart()
+
             }
 
             function addItem(element) {
@@ -104,11 +129,17 @@
                         productItem.amount++
                     }
 
+                    if (productItem.amount === 0) {
+                        cart.splice(cart.indexOf(productItem), 1);
+                    }
+
                 }
+                if (cart.length !== 0)
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                else
+                    localStorage.removeItem('cart');
 
-                localStorage.setItem('cart', JSON.stringify(cart));
-
-                refreshCart()
+                refreshCart();
 
             }
 
@@ -156,6 +187,18 @@
                 changeNumberItem();
                 getCart();
             }
+
+            @if(session()->get('product_name'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error en el producto {{session()->get('product_name')}}',
+                text: '{{session()->get('message')}}',
+                showConfirmButton: true,
+                color: '#dee2e6',
+                iconColor: '#d83131',
+                background: '#24292d',
+            })
+            @endif
         </script>
     @endpush
 @endsection

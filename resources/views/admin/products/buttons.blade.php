@@ -5,10 +5,10 @@
     </button>
     <ul class="dropdown-menu dark-background" aria-labelledby="dropdownMenuButton1">
         <li>
-            <a href="{{route('products.edit', $productItem)}}" class="btn btn-primary btn-sm button-primary-dark"> <i class="fa fa-pen"></i> </a>
+            <a href="{{route('products.edit', $product)}}" class="btn btn-primary btn-sm button-primary-dark"> <i class="fa fa-pen"></i> </a>
         </li>
         <li>
-            <button data-productItem="{{json_encode($productItem)}}" class="btn btn-danger btn-sm products-delete-btn"><i class="fa fa-trash"></i> </button>
+            <button data-productItem="{{json_encode($product)}}" class="btn btn-danger btn-sm products-delete-btn"><i class="fa fa-trash"></i> </button>
         </li>
     </ul>
 </div>
