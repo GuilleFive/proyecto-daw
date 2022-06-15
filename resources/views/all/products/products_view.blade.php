@@ -3,12 +3,12 @@
 @section('content')
     <div class="container mb-3">
         <div class="row">
-            <div class="col-12 col-lg-5 mb-5 mb-lg-0">
+            <div class="col-12 col-xl-5 mb-5 mb-xl-0">
                 <div class="image-container product-view bg-dark p-3">IMAGEN</div>
 
             </div>
 
-            <div class="col-12 col-lg-5 mb-5 mb-lg-0">
+            <div class="col-12 col-xl-5 mb-5 mb-xl-0">
                 <div class="product-specs product-view bg-dark p-3">
                     <div class="title mb-5">
                         <p class="h1">{{json_decode($product)->name}}</p>
@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div class="col-12 col-lg-2">
+            <div class="col-12 col-xl-2">
                 <div class="actions-container d-flex flex-column product-view bg-dark p-3">
                     <div class="price">
                         <p class="h2">{{json_decode($product)->price}}€</p>
