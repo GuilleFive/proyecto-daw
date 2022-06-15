@@ -27,7 +27,7 @@
 
                     <div class="d-flex flex-wrap dark-background address-chooser checkout-form-background mb-4">
                         <p class="h2 mb-3 w-100">{{__('Método de pago')}}</p>
-                        <select class="form-select w-50" name="payment">
+                        <select class="form-select w-50" name="payment_method">
                             <option id="1" value="visa" name="visa">Visa</option>
                             <option id="2" value="mastercard" name="mastercard">Mastercard</option>
                             <option id="3" value="paypal" name="paypal">Paypal</option>
@@ -90,6 +90,18 @@
 
     @push('scripts')
         <script defer>
+
+            @if(session()->get('product_name'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error en el producto {{session()->get('product_name')}}',
+                text: '{{session()->get('message')}}',
+                showConfirmButton: true,
+                color: '#dee2e6',
+                iconColor: '#d83131',
+                background: '#24292d',
+            })
+            @endif
 
             document.querySelector('.button-new-address').addEventListener('click', openModalNewAddress);
             document.querySelector('.button-remove-address').addEventListener('click', openModalRemoveAddress);

@@ -50,6 +50,15 @@ Route::group([], function () {
     Route::get('products/view/{product}', [ProductController::class, 'showProduct'])->name('products.show');
 });
 
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('profile', [UserController::class, 'profile'])->name('users.profile');
+    Route::post('profile/edit', [UserController::class, 'editProfile'])->name('users.edit_profile');
+    Route::delete('account/delete', [UserController::class, 'deleteAccount'])->name('users.delete_account');
+    Route::get('orders/show/{order}', [OrderController::class, 'showOrder'])->name('orders.show');
+});
+
+
+
 Route::group(['middleware' => ['can:make_orders', 'verified', 'auth']], function () {
 
     Route::post('addresses/post', [AddressController::class, 'createAddress'])->name('addresses.post');
@@ -57,11 +66,12 @@ Route::group(['middleware' => ['can:make_orders', 'verified', 'auth']], function
 
     Route::get('orders/form', [OrderController::class, 'form'])->name('orders.form');
     Route::post('orders/post', [OrderController::class, 'createOrder'])->name('orders.post');
-    Route::post('orders/done', function () {
-        return view('client.orders.done');
-    })->name('orders.done');
+    Route::delete('orders/cancel', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
+    Route::get('orders/my_orders', function () {
+        return view('client.orders.list');
+    })->name('orders.mine');
+    Route::post('orders/client/list', [OrderController::class, 'getOrders'])->name('orders.list.client');
 
-    Route::get('orders/show/{order}', [OrderController::class, 'showOrder'])->name('orders.show');
 });
 
 

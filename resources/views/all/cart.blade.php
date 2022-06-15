@@ -54,7 +54,7 @@
                             id: oProduct.id,
                             amount: productItem.amount
                         })}'>`;
-                        products.innerHTML += `<div class="row align-items-center align-content-center mb-5"><div class="col-12 col-md-5">${oProduct.name}</div><div class="d-none d-md-block col-md-2"></div> <div class="col-12 col-md-5 mt-3 mt-md-0 text-md-end"><button type="button" class="btn btn-outline-danger minus">-</button><input type="number" class="form-control input-amount" min="0" max="250" value="${productItem.amount}"> <input type="hidden" value="${oProduct.id}"> <button type="button" class="btn btn-outline-success plus">+</button> <button type="button" class="btn text-primary-dark remove-item">Eliminar de la lista</button></div></div>`;
+                        products.innerHTML += `<div class="row align-items-center align-content-center mb-5"><div class="col-12 col-md-5">${oProduct.name}</div><div class="d-none d-md-block col-md-2"></div> <div class="col-12 col-md-5 mt-3 mt-md-0 text-md-end"><button type="button" class="btn btn-outline-danger minus">-</button><input type="number" class="form-control input-amount" min="0" max="${oProduct.stock}" value="${productItem.amount}"> <input type="hidden" value="${oProduct.id}"> <button type="button" class="btn btn-outline-success plus">+</button> <button type="button" class="btn text-primary-dark remove-item">Eliminar de la lista</button></div></div>`;
 
                         total += oProduct.price * productItem.amount;
                     }

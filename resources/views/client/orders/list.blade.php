@@ -18,9 +18,8 @@
         <table class="table table-bordered table-striped table-dark yajra-datatable">
             <thead>
             <tr>
-                <th>{{__('ID')}}</th>
-                <th>{{__('Usuario')}}</th>
                 <th>{{__('Nº de Productos')}}</th>
+                <th>{{__('Destinatario')}}</th>
                 <th>{{__('Dirección')}}</th>
                 <th>{{__('Código Postal')}}</th>
                 <th>{{__('Método Pago')}}</th>
@@ -83,7 +82,7 @@
                     [10, 25, 50, -1],
                     [10, 25, 50, 'Todos'],
                 ],
-                order: [[8, 'asc'], [7, 'desc']],
+                order: [ 6, 'desc' ],
                 scrollX: true,
                 processing: true,
                 serverSide: true,
@@ -91,7 +90,7 @@
                     headers: {
                         'X-CSRF-TOKEN': '{{csrf_token()}}',
                     },
-                    url: "{{ route('orders.list') }}",
+                    url: "{{ route('orders.list.client') }}",
                     type: 'POST',
                     data: {
                         'startDate': () => document.querySelector('.start-date').value,
@@ -100,9 +99,8 @@
                 },
                 fnDrawCallback: finishDrawing,
                 columns: [
-                    {data: 'id', name: 'id'},
-                    {data: 'user', name: 'user'},
                     {data: 'product', name: 'product'},
+                    {data: 'receiver', name: 'receiver'},
                     {data: 'address', name: 'address'},
                     {data: 'postal_code', name: 'postal_code'},
                     {data: 'payment_method', name: 'payment_method'},
@@ -138,38 +136,31 @@
                 document.querySelectorAll('.orders-deliver-btn').forEach(element => {
                     element.addEventListener('click', () => openDeliverModal(element.dataset.order));
                 });
+
+                document.querySelectorAll('.orders-deliver-btn').forEach(element => {
+                    element.addEventListener('click', () => openDeliverModal(element.dataset.order));
+                });
+
+                document.querySelectorAll('.orders-cancel-btn').forEach(element => {
+                    element.addEventListener('click', () => openCancelModal(element.dataset.order));
+                });
+
                 dataTable.button(0).enable(true);
                 dataTable.button(1).enable(true);
                 dataTable.button(2).enable(true);
             }
 
-            function getProducts(order) {
-                let products = [];
-                for (const product of order.product) {
-                    products[product.name] ?
-                        products[product.name]++ :
-                        products[product.name] = 1;
-                }
-                let countProducts = '';
-
-                for (const name of Object.keys(products)) {
-                    countProducts += `<p>${name} x ${products[name]}</p>`
-                }
-
-                return countProducts;
-            }
-
-            function openDeliverModal(order) {
+            function openCancelModal(order) {
                 const oOrder = JSON.parse(order);
                 Swal.fire({
-                    title: '¿Desea entregar este pedido?',
-                    html: `ID: ${oOrder.id}<br><br>Usuario: ${oOrder.user.name}<br><br>Fecha del pedido: ${oOrder.order_date}`,
+                    title: '¿Desea cancelar este pedido?',
+                    html: `ID: ${oOrder.id}<br><br>Destinatario: ${oOrder.address.receiver_name}<br><br>Fecha del pedido: ${oOrder.order_date}`,
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#2891de',
                     cancelButtonColor: '#d33',
                     cancelButtonText: 'Cancelar',
-                    confirmButtonText: 'Entregar',
+                    confirmButtonText: 'Aceptar',
                     color: '#dee2e6',
                     iconColor: '#ff852d',
                     background: '#24292d',
@@ -184,8 +175,8 @@
                         });
 
                         $.ajax({
-                            url: '{{route('orders.deliver')}}',
-                            type: 'PATCH',
+                            url: '{{route('orders.cancel')}}',
+                            type: 'DELETE',
                             data: {
                                 'order': oOrder.id
                             },
@@ -194,7 +185,7 @@
                                 dataTable.draw();
                                 Swal.fire({
                                     icon: 'success',
-                                    title: 'Pedido entregado',
+                                    title: 'Pedido cancelado',
                                     showConfirmButton: false,
                                     timer: 1100,
                                     color: '#dee2e6',
@@ -216,6 +207,7 @@
                     }
                 })
             }
+
 
         </script>
     @endpush

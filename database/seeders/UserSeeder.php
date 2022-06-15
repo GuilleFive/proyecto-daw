@@ -7,10 +7,8 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use function Sodium\add;
 
 class UserSeeder extends Seeder
 {
@@ -67,26 +65,32 @@ class UserSeeder extends Seeder
         Order::factory()->count(1000)->create([
             'user_id' => 1,
             'total' => 0,
+            'address_id' => 1,
+            'payment_method' => 'Visa',
         ])->each(function ($order) {
             $address = $this->findRandomAddress();
 
             $order->user_id = $address->user_id;
-            $order->address = $address->address;
-            $order->postal_code = $address->postal_code;
+            $order->address_id = $address->id;
             $product = $this->findRandomProduct();
-            $total = 0;
-            for ($i = 0; $i < rand(1, 6); $i++) {
-                if (rand(1, 10) > 5) {
-                    for ($i = 0; $i < rand(1, 3); $i++) {
-                        $order->product()->attach($product);
-                        $total += Product::query()->find($product)->first()->price;
-                    }
+            $order->product()->attach($product);
+            $order->payment_method = $this->findRandomPayment();
+            $total = Product::query()->find($product)->price;
+
+            if (rand(1, 10) > 5) {
+                for ($i = 0; $i < 3; $i++) {
+                    $order->product()->attach($product);
+                    $total += Product::query()->find($product)->price;
                 }
+            }
+
+            for ($i = 0; $i< rand(1,6); $i++){
                 $newProduct = $this->findRandomProduct();
                 $order->product()->attach($newProduct);
-                $total += Product::query()->find($newProduct)->first()->price;
-
+                $total += Product::query()->find($newProduct)->price;
             }
+
+
             $order->total = $total;
             $order->save();
         });
@@ -111,12 +115,19 @@ class UserSeeder extends Seeder
         );
     }
 
+    private function findRandomPayment(): string
+    {
+        $methods = ['visa', 'mastercard', 'paypal'];
+
+        return $methods[rand(0,2)];
+    }
+
     private function generateTryUsers()
     {
         $user = User::factory()->create([
             'name' => 'client',
             'username' => 'client',
-            'password' => Hash::make(1),
+            'password' => Hash::make('1'),
         ])->assignRole('client');
 
         Address::factory()->create([
@@ -126,13 +137,13 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'admin',
             'username' => 'admin',
-            'password' => Hash::make(1),
+            'password' => Hash::make('1'),
         ])->assignRole('admin');
 
         User::factory()->create([
             'name' => 'super_admin',
             'username' => 'super_admin',
-            'password' => Hash::make(1),
+            'password' => Hash::make('1'),
         ])->assignRole('super_admin');
 
     }

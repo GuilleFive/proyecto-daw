@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditProfileRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
-use function PHPUnit\Framework\returnArgument;
 
 class UserController extends Controller
 {
@@ -82,5 +83,47 @@ class UserController extends Controller
     {
         $user = User::withTrashed()->find(json_decode($request->user)->id);
         $user->restore();
+    }
+
+    public function profile()
+    {
+
+        return view('all.users.profile', ['user' => Auth::user()]);
+
+    }
+
+    public function editProfile(EditProfileRequest $request)
+    {
+        if (Hash::check($request->current_password, Auth::user()->password)) {
+            if ($request->email !== Auth::user()->email)
+                Auth::user()->email_verified_at = null;
+
+            Auth::user()->username = $request->username;
+            Auth::user()->email = $request->email;
+            Auth::user()->phone = $request->phone;
+
+            if ($request->new_password !== null) {
+                if (Hash::check($request->new_password, Auth::user()->password))
+                    return redirect()->back()->withErrors(['new_password' => 'La nueva contraseña no debe ser igual a la anterior'])->withInput();
+                Auth::user()->password = Hash::make($request->new_password);
+            }
+
+            Auth::user()->save();
+
+            return redirect()->back()->with('success', 'Datos actualizados');
+        } else
+            return redirect()->back()->withErrors(['current_password' => 'Comprueba tu contraseña'])->withInput();
+    }
+
+    public function deleteAccount()
+    {
+        $user = User::find(Auth::user()->id);
+
+        Auth::logout();
+
+        $user->delete();
+
+
+
     }
 }

@@ -20,21 +20,18 @@
             </a>
 
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{{ route('users.profile') }}">
+                    {{__('Mis datos')}}
+                </a>
                 @can('make_orders')
-                    <a class="dropdown-item" href="{{ '#' }}">
+                    <a class="dropdown-item" href="{{ route('orders.mine') }}">
                         {{__('Mis pedidos')}}
                     </a>
                 @endcan
-                <a class="dropdown-item" href="{{ '#' }}">
-                    {{__('Mis datos')}}
-                </a>
-                <a class="dropdown-item" href="{{ route('logout') }}"
-                   onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                    {{ __('Logout') }}
-                </a>
-
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                <button class="dropdown-item">
+                    {{ __('Logout') }} <i class="fa fa-sign-out-alt"></i>
+                </button>
                     @csrf
                 </form>
             </div>

@@ -21,7 +21,7 @@
         @else
             <li>
                 <button data-user="{{json_encode($user)}}" class="btn btn-sm btn-danger users-force-delete-btn">
-                    <i class="fa fa-times "></i>
+                    <i class="fa fa-times"></i>
                 </button>
             </li>
         @endif

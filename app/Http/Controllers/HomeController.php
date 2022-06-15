@@ -31,9 +31,8 @@ class HomeController extends Controller
         if (Auth::check() && Auth::user()->hasRole(['admin', 'super_admin'])) {
             return view('admin.home');
         }
-        $products = Product::query()->with(['product_category'])->where('stock', '>', 0)->orderBy('updated_at', 'DESC')->orderBy('created_at', 'DESC')->limit(17)->get();
 
-        return view('home', ['products' => $products]);
+        return view('home');
 
 
     }

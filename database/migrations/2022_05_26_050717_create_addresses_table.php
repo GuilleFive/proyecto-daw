@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('postal_code');
             $table->string('receiver_name');
             $table->foreignId('user_id')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
