@@ -442,6 +442,12 @@ a.selected:hover{
 #search-input{
     width: 95%;
 }
+
+.img-home{
+    object-fit: cover;
+    width: 100%;
+    max-height: 250px;
+}
 @media screen and (max-width: 768px) {
 
     li.paginate_button.previous {

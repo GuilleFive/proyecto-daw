@@ -182,8 +182,12 @@ class HomeController extends Controller
 
         $products = $products->get();
 
+        $media = [];
+        foreach ($products as $product) {
+            $media[$product->id] = $product->getMedia()[0]->getFullUrl();
+        }
 
-        return json_encode(['products' => json_encode($products), 'length' => count($products), 'order' => $order, 'category' => $category, 'total' => $totalProducts]);
+        return json_encode(['products' => json_encode($products), 'media' => json_encode($media), 'length' => count($products), 'order' => $order, 'category' => $category, 'total' => $totalProducts]);
     }
 
     public function getCategories()

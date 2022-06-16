@@ -1,28 +1,20 @@
 <footer class="footer__distributed">
 
     <div class="footer__right">
-
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-linkedin"></i></a>
-        <a href="#"><i class="fab fa-github"></i></a>
-
+        <a href="https://www.linkedin.com/in/guillermoromeroaguilar/" target="__blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://github.com/GuilleFive" target="__blank"><i class="fab fa-github"></i></a>
     </div>
 
     <div class="footer__left">
 
         <p class="footer__links">
-            <a class="link-1" href="#">Home</a>
+            <a class="link-1" href="{{route('home')}}">{{__('Home')}}</a>
 
-            <a href="#">Blog</a>
+            <a href="{{route('users.profile')}}">{{__('Perfil')}}</a>
 
-            <a href="#">Pricing</a>
+            <a href="{{route('orders.mine')}}">{{__('Pedidos')}}</a>
 
-            <a href="#">About</a>
-
-            <a href="#">Faq</a>
-
-            <a href="#">Contact</a>
+            <a href="{{route('cart')}}">{{__('Carrito')}}</a>
         </p>
 
         <p>Retkon Hardware &copy; {{now()->year}}</p>

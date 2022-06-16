@@ -88,7 +88,7 @@ class ProductController extends Controller
     function showProduct(Product $product)
     {
 
-        return view('all.products.products_view', ['product' => json_encode($product)]);
+        return view('all.products.products_view', ['product' => $product]);
 
     }
 

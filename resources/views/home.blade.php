@@ -9,8 +9,7 @@
         <div class="mb-5">
             <form id="form-search">
                 <div class="search-container d-flex justify-content-between">
-
-                    <input type="search" disabled id="search-input" placeholder="Buscar productos"
+                    <input type="search" autocomplete="off" disabled id="search-input" placeholder="Buscar productos"
                            class="form-control search-input">
                     <button type="submit" disabled class="btn button-primary-dark button-search"><i class="fa fa-search"></i></button>
                 </div>

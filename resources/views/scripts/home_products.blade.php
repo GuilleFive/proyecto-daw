@@ -89,10 +89,11 @@
                 const category = JSON.parse(response).category;
                 const total = JSON.parse(response).total;
                 const products = JSON.parse(JSON.parse(response).products);
+                const media = JSON.parse(JSON.parse(response).media);
                 let productAisle = '';
                 if (total > 0) {
                     for (const product of products) {
-                        productAisle += `<div class="col-12 col-md-6 col-xl-4 mb-5"><div class="card h-100"><a href="{{url('products/view')}}/${product.id}" class="text-decoration-none"><img class="card-img-top dark-background" src="" alt="Card image cap"></a><div class="card-body d-flex flex-wrap justify-content-center align-content-around h-100"><h5 class="card-title">${product.name}</h5><p class="card-text w-100">${product.description}</p>`;
+                        productAisle += `<div class="col-12 col-md-6 col-xl-4 mb-5"><div class="card h-100"><a href="{{url('products/view')}}/${product.id}" class="text-decoration-none"><img class="card-img-top img-home dark-background" src="${media[product.id]}" alt="Card image cap"></a><div class="card-body d-flex flex-wrap justify-content-center align-content-around h-100"><h5 class="card-title">${product.name}</h5><p class="card-text w-100">${product.description}</p>`;
                         if (product.stock < 6) {
                             if (product.stock === 1) {
                                 productAisle += `<div class="align-self-end d-flex justify-content-between w-100"><p class="card-text text-danger" title="¡¡Queda una unidad!!">Solo ${product.stock} unidad</p>`;
@@ -102,7 +103,7 @@
                         } else {
                             productAisle += `<div class="align-self-end d-flex justify-content-between w-100"><p class="card-text text-success">En stock</p>`;
                         }
-                        productAisle += ` <p class="card-text h3">${product.price}€</p><button type="button" data-product='${JSON.stringify(product)}' class="btn button-primary-outline-dark align-self-end float-md-end add-cart"><i class="fa fa-cart-plus"></i></button>`;
+                        productAisle += ` <p class="card-text h3">${product.price}€</p><button type="button" data-product='${JSON.stringify(product).replace(/'/g, 'singleQuoteError')}' class="btn button-primary-outline-dark align-self-end float-md-end add-cart"><i class="fa fa-cart-plus"></i></button>`;
                         productAisle += '</div></div></div></div>';
 
                     }
@@ -135,7 +136,7 @@
             element.addEventListener('click', () => {
 
                 const arrayProducts = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
-                const product = element.dataset.product;
+                const product = element.dataset.product.replace('singleQuoteError', '\'');
 
                 if (arrayProducts.length === 0)
                     arrayProducts.push({'product': product, 'amount': 1});

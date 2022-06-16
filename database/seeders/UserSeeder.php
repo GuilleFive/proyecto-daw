@@ -57,7 +57,11 @@ class UserSeeder extends Seeder
     {
         Product::factory()->count(rand(1, 10))->create([
             'product_category_id' => $productCategory,
-        ]);
+        ])->each(function($product){
+            $product
+                ->addMediaFromUrl('https://source.unsplash.com/random')
+                ->toMediaCollection();
+        });
     }
 
     private function generateOrders()
