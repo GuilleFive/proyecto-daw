@@ -24,6 +24,18 @@
     @push('scripts')
         <script type="text/javascript">
 
+            @if(session()->get('done'))
+            Swal.fire({
+                icon: 'success',
+                title: "{{session()->get('done')}}",
+                showConfirmButton: false,
+                timer: 1100,
+                color: '#dee2e6',
+                iconColor: '#85ff3e',
+                background: '#24292d',
+            });
+            @endif
+
             const table = $('.yajra-datatable');
             let columns = [];
             for (let i = 0; i < table[0].rows[0].cells.length - 1; i++)

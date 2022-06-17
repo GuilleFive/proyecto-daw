@@ -8,21 +8,35 @@
                     @csrf
                     <div class="d-flex flex-wrap dark-background address-chooser checkout-form-background mb-4">
                         <p class="h2 w-100">{{__('Dirección de envío')}}</p>
-                        <p class="w-100 receiver">{{__('Destinatario:')}} <b>{{$addresses[0]->receiver_name}}</b></p>
-                        <p class="w-100 postal-code">{{__('Código postal:')}} <b>{{$addresses[0]->postal_code}}</b></p>
-                        <select id="addresses" class="form-select w-50" name="addresses">
-                            @foreach($addresses as $address)
-                                <option id="{{$address->id}}" value="{{$address->id}}"
-                                        data-address='{{json_encode($address)}}'
-                                        name="{{$address->id}}">{{$address->address}}</option>
-                            @endforeach
+                        <p class="w-100 receiver">{{__('Destinatario:')}}
+                            <b>@if(count($addresses)>0){{$addresses[0]->receiver_name}}@endif</b></p>
+                        <p class="w-100 postal-code">{{__('Código postal:')}}
+                            <b>@if(count($addresses)>0){{$addresses[0]->postal_code}}@endif</b></p>
+                        <select id="addresses"
+                                class="form-select @if(session()->get('error') !== null) is-invalid @endif w-50"
+                                name="addresses">
+                            @if(count($addresses)>0)
+                                @foreach($addresses as $address)
+                                    <option id="{{$address->id}}" value="{{$address->id}}"
+                                            data-address='{{json_encode($address)}}'
+                                            name="{{$address->id}}">{{$address->address}}</option>
+                                @endforeach
+                            @endif
                         </select>
+
                         <button type="button" class="btn button-primary-outline-dark ms-3 button-new-address"><i
                                 class="fa fa-plus-circle"></i>
                         </button>
                         <button type="button" class="btn btn-outline-danger ms-3 button-remove-address"><i
                                 class="fa fa-trash"></i>
                         </button>
+
+                        @if(session()->get('error') !== null)
+                            <span class="invalid-feedback" role="alert">
+                           <strong>{{ session()->get('error') }}</strong>
+                        </span>
+                        @endif
+
                     </div>
 
                     <div class="d-flex flex-wrap dark-background address-chooser checkout-form-background mb-4">
@@ -49,8 +63,8 @@
                                 <input type="hidden" name="products[]"
                                        value='{{json_encode(['product' => $productItem->product,'amount' => $productItem->amount])}}'>
                             @endforeach
-                                <input type="hidden" name="total"
-                                       value='{{$total}}'>
+                            <input type="hidden" name="total"
+                                   value='{{$total}}'>
                             <div class="h3 float-end">Total: {{$total}}€</div>
                         </div>
                     </div>
@@ -66,7 +80,7 @@
                         </div>
                     </div>
 
-                    <div class="buttons-container float-end ">
+                    <div class="buttons-container float-end mb-5">
                         <a href="{{url()->previous()}}" class="btn btn-secondary me-3">{{__('Volver')}}</a>
                         <button class="btn button-primary-dark">{{__('Comprar ya')}}</button>
                     </div>

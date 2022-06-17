@@ -462,6 +462,13 @@ a.selected:hover{
     width: 100%;
     max-height: 250px;
 }
+
+.img-form{
+    -o-object-fit: cover;
+       object-fit: cover;
+    width: 100%;
+    max-height: 350px;
+}
 @media screen and (max-width: 768px) {
 
     li.paginate_button.previous {

@@ -12,7 +12,7 @@
             <a href="{{route('products.edit', $product)}}" class="btn btn-secondary btn-primary btn-sm"> <i class="fa fa-pen"></i> </a>
         </li>
         <li>
-            <button data-productItem="{{json_encode($product)}}" class="btn btn-danger btn-sm products-delete-btn"><i class="fa fa-trash"></i> </button>
+            <button data-product="{{json_encode($product)}}" class="btn btn-danger btn-sm products-delete-btn"><i class="fa fa-trash"></i> </button>
         </li>
     </ul>
 </div>

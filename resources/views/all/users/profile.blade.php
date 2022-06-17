@@ -117,8 +117,12 @@
                                     <button type="button" class="btn button-primary-dark edit">
                                         {{ __('Editar') }}
                                     </button>
-                                    <button type="button" id="delete-account"
-                                            class="btn btn-danger">{{__('Eliminar cuenta')}}</button>
+                                    @can('create_admins')
+                                    @else
+                                        <button type="button" id="delete-account"
+                                                class="btn btn-danger">{{__('Eliminar cuenta')}}</button>
+                                    @endcan
+
                                 </div>
                                 <div class="buttons-container d-none">
                                     <button type="submit" class="btn button-primary-dark">
@@ -184,12 +188,13 @@
             localStorage.clear();
             @endif
 
-            document.querySelector('#delete-account').addEventListener('click', () =>openDeleteAccountModal());
+            document.querySelector('#delete-account').addEventListener('click', () => openDeleteAccountModal());
 
             function openDeleteAccountModal() {
                 Swal.fire({
                     title: '¿Desea borrar su cuenta?',
                     icon: 'warning',
+                    html: '<label for="password-delete" class="mb-3">Inserte su contraseña para continuar</label><input type="password" class="form-control" id="password-delete">',
                     showCancelButton: true,
                     confirmButtonColor: '#2891de',
                     cancelButtonColor: '#d33',
@@ -210,16 +215,19 @@
 
                         $.ajax({
                             url: '{{route('users.delete_account')}}',
+                            data: {
+                                'password': document.querySelector('#password-delete').value.trim(),
+                            },
                             type: 'DELETE',
 
-                        }).success(location.href = '{{route('home')}}')
+                        }).success(()=> location.href = '{{route('home')}}')
 
                             .fail(
                                 () => {
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Error de conexión',
-                                        text: 'Inténtelo de nuevo',
+                                        text: 'Compruebe su contraseña e inténtelo de nuevo',
                                         showConfirmButton: true,
                                         color: '#dee2e6',
                                         iconColor: '#d83131',

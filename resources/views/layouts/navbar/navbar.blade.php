@@ -19,7 +19,6 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
-
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
             @include('layouts.navbar.sides.left_side')

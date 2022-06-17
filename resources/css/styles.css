@@ -314,9 +314,7 @@ table .dropdown-menu.show {
 }
 
 .card-img-top.dark-background {
-
     min-height: 15em;
-
 }
 
 #category {
@@ -447,6 +445,12 @@ a.selected:hover{
     object-fit: cover;
     width: 100%;
     max-height: 250px;
+}
+
+.img-form{
+    object-fit: cover;
+    width: 100%;
+    max-height: 350px;
 }
 @media screen and (max-width: 768px) {
 

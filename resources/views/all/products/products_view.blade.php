@@ -20,6 +20,9 @@
                     <div class="description mb-5">
                         <p class="h5 text-break">{{$product->description}}</p>
                     </div>
+
+                    <a href="{{url()->previous() === 'http://proyecto-daw.test/products'? route('products'):route('home')}}" class="btn btn-secondary">Volver</a>
+
                 </div>
             </div>
             @can('create_products')

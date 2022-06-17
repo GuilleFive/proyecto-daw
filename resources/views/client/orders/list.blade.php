@@ -82,7 +82,7 @@
                     [10, 25, 50, -1],
                     [10, 25, 50, 'Todos'],
                 ],
-                order: [ 6, 'desc' ],
+                order: [6, 'desc'],
                 scrollX: true,
                 processing: true,
                 serverSide: true,
@@ -97,7 +97,14 @@
                         'endDate': () => document.querySelector('.end-date').value,
                     },
                 },
-                fnDrawCallback: finishDrawing,
+                fnDrawCallback: settings => {
+                    finishDrawing();
+                    if (settings._iDisplayLength > settings.fnRecordsDisplay() || isNaN(settings.fnRecordsDisplay())) {
+                        $(settings.nTableWrapper).find('.dataTables_paginate').hide();
+                    } else {
+                        $(settings.nTableWrapper).find('.dataTables_paginate').show();
+                    }
+                },
                 columns: [
                     {data: 'product', name: 'product'},
                     {data: 'receiver', name: 'receiver'},

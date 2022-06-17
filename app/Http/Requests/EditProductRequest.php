@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class StoreProductRequest extends FormRequest
+class EditProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class StoreProductRequest extends FormRequest
      */
     public function authorize()
     {
-       return Auth::user()->hasPermissionTo('create_products');
+        return Auth::user()->hasRole(['admin', 'super_admin']);
     }
 
     /**
@@ -24,13 +24,11 @@ class StoreProductRequest extends FormRequest
      */
     public function rules()
     {
-
         return [
             'name' => 'required|string',
             'description' => 'required|string|max:140',
             'stock' => 'required|int|min:0|max:255',
             'price' => 'required|numeric|between:3,5000.99',
-            'image' => 'required',
         ];
     }
 }

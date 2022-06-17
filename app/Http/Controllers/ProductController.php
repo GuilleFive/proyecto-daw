@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditProductRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use function PHPUnit\Framework\returnArgument;
 
 class ProductController extends Controller
 {
@@ -51,7 +51,7 @@ class ProductController extends Controller
     public function createProduct(StoreProductRequest $request)
     {
 
-        Product::factory()->create([
+        $product = Product::factory()->create([
             'name' => $request->name,
             'description' => $request->description,
             'stock' => $request->stock,
@@ -59,23 +59,37 @@ class ProductController extends Controller
             'price' => $request->price,
         ]);
 
-        return redirect()->route('products')->withTitle('Producto añadido');
+        if ($request->image !== null) {
+            $product->addMedia($request->image)
+                ->preservingOriginal()
+                ->toMediaCollection();
+        }
+
+        return redirect()->route('products')->with('done', 'Producto añadido');
     }
 
-    public function editProduct(StoreProductRequest $request)
+    public function editProduct(EditProductRequest $request)
     {
 
-        $product = Product::query()->find($request->id);
+        $product = Product::query()->find($request->id)->first();
 
         $product->name = $request->name;
         $product->description = $request->description;
         $product->stock = $request->stock;
         $product->product_category_id = $request->category;
         $product->price = $request->price;
+        if ($request->image !== null) {
+            $product->getMedia()[0]->delete();
+            $product
+                ->addMedia($request->image)
+                ->preservingOriginal()
+                ->toMediaCollection();
+
+        }
 
         $product->save();
 
-        return redirect()->route('products')->withTitle('Producto editado');
+        return redirect()->route('products')->with('done', 'Producto editado');
 
     }
 

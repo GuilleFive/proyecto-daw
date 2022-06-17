@@ -7,8 +7,6 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
-use App\Models\Product;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -46,7 +44,6 @@ Route::group([], function () {
     Route::post('home/getProducts', [HomeController::class, 'getProducts'])->name('home.products');
     Route::post('home/getCategories', [HomeController::class, 'getCategories'])->name('home.categories');
     Route::get('cart', [CartController::class, 'getCart'])->name('cart');
-
     Route::get('products/view/{product}', [ProductController::class, 'showProduct'])->name('products.show');
 });
 
@@ -54,7 +51,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('profile', [UserController::class, 'profile'])->name('users.profile');
     Route::post('profile/edit', [UserController::class, 'editProfile'])->name('users.edit_profile');
     Route::delete('account/delete', [UserController::class, 'deleteAccount'])->name('users.delete_account');
+});
+
+Route::group(['middleware' => ['verified', 'auth']], function () {
     Route::get('orders/show/{order}', [OrderController::class, 'showOrder'])->name('orders.show');
+
 });
 
 
@@ -113,8 +114,6 @@ Route::group(['middleware' => ['can:create_admins', 'verified', 'auth']], functi
     Route::patch('users/upgrade', [UserController::class, 'changePowerUser'])->name('users.upgrade');
     Route::patch('users/restore', [UserController::class, 'restoreUser'])->name('users.restore');
     Route::delete('users/force_delete', [UserController::class, 'forceDeleteUser'])->name('users.force_delete');
-
-
 
 });
 

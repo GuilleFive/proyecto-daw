@@ -115,15 +115,17 @@ class UserController extends Controller
             return redirect()->back()->withErrors(['current_password' => 'Comprueba tu contraseña'])->withInput();
     }
 
-    public function deleteAccount()
+    public function deleteAccount(Request $request)
     {
-        $user = User::find(Auth::user()->id);
 
-        Auth::logout();
+        if (Hash::check($request->password, Auth::user()->password)) {
+            $user = User::find(Auth::user()->id);
 
-        $user->delete();
-
-
+            Auth::logout();
+            return response()->json(['success' => '']);
+            $user->delete();
+        } else
+            return response()->json(['errors' => ''], 404);
 
     }
 }

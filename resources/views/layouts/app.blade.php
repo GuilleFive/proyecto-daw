@@ -56,8 +56,8 @@
 
         if (products) {
             let cartAmount = 0;
-            for (const productItem of products) {
-                cartAmount += productItem.amount;
+            for (const product of products) {
+                cartAmount += product.amount;
             }
             numberItems.forEach(element => {
                 element.textContent = `${cartAmount}`

@@ -70,7 +70,6 @@ class OrderController extends Controller
 
     function form(Request $request)
     {
-
         $addresses = Address::query()->where('user_id', Auth::user()->id)->get();
 
         $arrayProducts = $request->products;
@@ -108,6 +107,9 @@ class OrderController extends Controller
 
     public function createOrder(Request $request)
     {
+        if($request->addresses === null)
+        return redirect()->back()->with('error', 'Debe crear una dirección para enviar el pedido');
+
         foreach ($request->products as $productItem) {
             $product = Product::query()->find(json_decode(json_decode($productItem)->product)->id)->first();
             if (json_decode($productItem)->amount > $product->stock) {

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-    <div class="container ">
+    <div class="container">
         <h2>{{__($form.' producto')}}</h2>
         <div class="d-flex justify-content-center">
             <form action="{{isset($product)?route('products.change'):route('products.post')}}" method="POST"
@@ -61,7 +61,6 @@
                                     name="{{$category->id}}">{{$category->name}}</option>
                         @endforeach
                     </select>
-                    @can('create_products')
                         <button id="add-category" type="button"
                                 class="btn btn-outline-primary button-primary-outline-dark float-end">
                             <i class="fa fa-plus-circle"></i>
@@ -71,7 +70,6 @@
                                 class="btn btn-outline-danger float-end">
                             <i class="fa fa-minus-circle"></i>
                         </button>
-                    @endcan
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">{{__('Precio (€)')}}</label>
@@ -93,7 +91,22 @@
                 @isset($product)
                     <input type="hidden" name="id" value="{{$product->id}}">
                 @endisset
-                <div class="mb-5">
+                <div class="mb-3 pb-2">
+                    <label for="image" class="form-label">{{__('Imagen del producto')}}</label>
+                    <input class="form-control mb-3  @error('image') is-invalid @enderror " name="image" type="file" id="image" accept="image/png, .jpg, .jpeg">
+                    @error('image')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                    @isset($product)
+                        @if(count($product->getMedia())>0)
+                            <img alt="{{__('Imagen del producto')}}" class="img-fluid img-form mb-3 rounded-3"
+                                 src="{{$product->getMedia()[0]->getFullUrl()}}">
+                        @endif
+                    @endisset
+                </div>
+                <div class="mb-5 text-center">
 
                     <button type="submit"
                             class="btn btn-primary button-primary-dark">{{isset($product)?__('Editar'):__('Añadir')}}</button>

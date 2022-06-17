@@ -18,6 +18,8 @@ class AddressController extends Controller
             'user_id' => Auth::user()->id,
         ]);
 
+        session()->forget('error');
+
         $addressEncoded = json_encode($address);
 
         return "<option id='$address->id' value='$address->id' data-address='$addressEncoded' name='$address->id'>$address->address</option>";
