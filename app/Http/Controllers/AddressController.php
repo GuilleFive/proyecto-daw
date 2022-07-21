@@ -17,7 +17,6 @@ class AddressController extends Controller
             'postal_code' => $request->postal_code,
             'user_id' => Auth::user()->id,
         ]);
-
         session()->forget('error');
 
         $addressEncoded = json_encode($address);

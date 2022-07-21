@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use function Sodium\add;
 
 class OrderController extends Controller
 {
@@ -122,7 +123,7 @@ class OrderController extends Controller
             }
         }
 
-        $address = Address::query()->find($request->addresses)->first()->id;
+        $address = Address::query()->find($request->addresses)->id;
 
         $order = Order::factory()->create([
             'user_id' => Auth::user()->id,
